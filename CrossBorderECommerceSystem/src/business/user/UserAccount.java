@@ -11,10 +11,12 @@ package business.user;
 public class UserAccount {
     private String username;
     private String password;
+    private Person person;
 
     public UserAccount(String username, String password) {
         this.username = username;
         this.password = password;
+        this.person = person;
     }
 
     public String getUsername() {
@@ -23,5 +25,9 @@ public class UserAccount {
 
     public String getPassword() {
         return password;
+    }
+    
+    public Person getPerson() {
+        return person;
     }
 }
