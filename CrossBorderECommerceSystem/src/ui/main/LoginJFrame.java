@@ -4,6 +4,9 @@
  */
 package ui.main;
 
+import business.enterprise.Enterprise;
+import business.user.UserAccount;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -11,12 +14,16 @@ import javax.swing.JOptionPane;
  * @author stelladong
  */
 public class LoginJFrame extends javax.swing.JFrame {
-
+private Enterprise enterprise;
+private ArrayList<UserAccount> userList;
     /**
      * Creates new form LoginJFrame
      */
     public LoginJFrame() {
         initComponents();
+        this.enterprise = enterprise;
+        userList = new ArrayList<>();
+        userList.add(new UserAccount("platform", "123", "PLATFORM_MGR"));
     }
 
     /**
@@ -105,24 +112,34 @@ public class LoginJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-    String username = txtUsername.getText();
-    String password = new String(txtPassword.getPassword());
+String username = txtUsername.getText();
+    String password = String.valueOf(txtPassword.getPassword());
 
-    if (username.equals("admin") && password.equals("123")) {
+    UserAccount foundUser = null;
 
-        MainJFrame main = new MainJFrame();
-        main.setVisible(true);
+    for (UserAccount ua : userList) {
+        if (ua.getUsername().equals(username) && ua.getPassword().equals(password)) {
+            foundUser = ua;
+            break;
+        }
+    }
 
-        this.dispose();
-
-    } else {
+    if (foundUser == null) {
         JOptionPane.showMessageDialog(this, "Invalid username or password");
-    } 
-        
-        
-        
-        
-        
+        return;
+    }
+
+    if (foundUser.getRole().equals("PLATFORM_MGR")) {
+        this.setContentPane(new PlatformWorkAreaJPanel(null));
+        this.revalidate();
+    } else {
+        JOptionPane.showMessageDialog(this, "Role not supported yet");
+    }
+
+
+
+
+
     }//GEN-LAST:event_btnLoginActionPerformed
 
     /**

@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package ui.order;
+import business.enterprise.Enterprise;
 import business.order.Order;
 import business.order.OrderItem;
 import business.product.Product;
@@ -15,7 +16,10 @@ import javax.swing.table.DefaultTableModel;
 public class OrderJPanel extends javax.swing.JPanel {
     private javax.swing.JPanel workArea;
 
-    public OrderJPanel(JPanel workArea) {
+
+    
+
+    public OrderJPanel(JPanel workArea, Enterprise enterprise) {
         initComponents();
         this.workArea = workArea;
         populateTable();
