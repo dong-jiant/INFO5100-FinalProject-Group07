@@ -15,17 +15,7 @@ public class Enterprise {
      private String name;
      private ArrayList<Organization> organizations;
 
-    public Enterprise(String name) {
-        this(name);
-    }
-
-    public Enterprise(String name) {
-        this(name);
-    }
-
-    public Enterprise(String name) {
-        this(name);
-    }
+ 
 
     public Enterprise(String name) {
         this.name = name;
