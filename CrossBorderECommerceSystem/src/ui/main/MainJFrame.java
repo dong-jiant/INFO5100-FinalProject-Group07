@@ -28,84 +28,115 @@ public class MainJFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jSplitPane1 = new javax.swing.JSplitPane();
-        jPanel1 = new javax.swing.JPanel();
+        jSplitPane2 = new javax.swing.JSplitPane();
+        menuPanel = new javax.swing.JPanel();
         btnViewOrders = new javax.swing.JButton();
+        btnManageProducts = new javax.swing.JButton();
         btnManageUsers = new javax.swing.JButton();
-        btnManageProduct = new javax.swing.JButton();
+        rightPanel = new javax.swing.JPanel();
+        topPanel = new javax.swing.JPanel();
+        lblSystemTitle = new javax.swing.JLabel();
+        lblEmail = new javax.swing.JLabel();
+        lblRole = new javax.swing.JLabel();
+        btnLogout = new javax.swing.JButton();
         workArea = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        btnViewOrders.setText(" View Orders ");
+        btnViewOrders.setText("View Orders");
         btnViewOrders.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnViewOrdersActionPerformed(evt);
             }
         });
 
-        btnManageUsers.setText("Manage Users  ");
-        btnManageUsers.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnManageUsersActionPerformed(evt);
-            }
-        });
+        btnManageProducts.setText("Manage Products");
 
-        btnManageProduct.setText("Manage Product");
+        btnManageUsers.setText("Manage Users");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnViewOrders, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnManageUsers, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnManageProduct, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addContainerGap())
+        javax.swing.GroupLayout menuPanelLayout = new javax.swing.GroupLayout(menuPanel);
+        menuPanel.setLayout(menuPanelLayout);
+        menuPanelLayout.setHorizontalGroup(
+            menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(menuPanelLayout.createSequentialGroup()
+                .addGroup(menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(btnManageProducts, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnManageUsers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnViewOrders, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(113, 113, 113)
+        menuPanelLayout.setVerticalGroup(
+            menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(menuPanelLayout.createSequentialGroup()
+                .addGap(63, 63, 63)
                 .addComponent(btnViewOrders)
-                .addGap(39, 39, 39)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnManageProducts, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnManageUsers)
-                .addGap(31, 31, 31)
-                .addComponent(btnManageProduct)
-                .addContainerGap(223, Short.MAX_VALUE))
+                .addContainerGap(331, Short.MAX_VALUE))
         );
 
-        jSplitPane1.setLeftComponent(jPanel1);
+        jSplitPane2.setTopComponent(menuPanel);
 
-        javax.swing.GroupLayout workAreaLayout = new javax.swing.GroupLayout(workArea);
-        workArea.setLayout(workAreaLayout);
-        workAreaLayout.setHorizontalGroup(
-            workAreaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 470, Short.MAX_VALUE)
+        rightPanel.setLayout(new java.awt.BorderLayout());
+
+        lblSystemTitle.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        lblSystemTitle.setText("Cross-Border E-Commerce");
+
+        lblEmail.setText("email");
+
+        lblRole.setText("role");
+
+        btnLogout.setText("Logout");
+
+        javax.swing.GroupLayout topPanelLayout = new javax.swing.GroupLayout(topPanel);
+        topPanel.setLayout(topPanelLayout);
+        topPanelLayout.setHorizontalGroup(
+            topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(topPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblSystemTitle)
+                .addGap(49, 49, 49)
+                .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(topPanelLayout.createSequentialGroup()
+                        .addComponent(lblRole)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 384, Short.MAX_VALUE)
+                        .addComponent(btnLogout)
+                        .addGap(29, 29, 29))
+                    .addGroup(topPanelLayout.createSequentialGroup()
+                        .addComponent(lblEmail)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
-        workAreaLayout.setVerticalGroup(
-            workAreaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 475, Short.MAX_VALUE)
+        topPanelLayout.setVerticalGroup(
+            topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(topPanelLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnLogout)
+                    .addGroup(topPanelLayout.createSequentialGroup()
+                        .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblSystemTitle)
+                            .addComponent(lblEmail))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblRole)))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
-        jSplitPane1.setRightComponent(workArea);
+        rightPanel.add(topPanel, java.awt.BorderLayout.PAGE_START);
 
-        getContentPane().add(jSplitPane1, java.awt.BorderLayout.CENTER);
+        workArea.setLayout(new java.awt.CardLayout());
+        rightPanel.add(workArea, java.awt.BorderLayout.CENTER);
+
+        jSplitPane2.setRightComponent(rightPanel);
+
+        getContentPane().add(jSplitPane2, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnManageUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageUsersActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnManageUsersActionPerformed
-
     private void btnViewOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewOrdersActionPerformed
-       
-    OrderJPanel panel = new OrderJPanel();
-    jSplitPane1.setRightComponent(panel);
-        
+        // TODO add your handling code here:
     }//GEN-LAST:event_btnViewOrdersActionPerformed
 
     /**
@@ -114,11 +145,17 @@ public class MainJFrame extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnManageProduct;
+    private javax.swing.JButton btnLogout;
+    private javax.swing.JButton btnManageProducts;
     private javax.swing.JButton btnManageUsers;
     private javax.swing.JButton btnViewOrders;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JSplitPane jSplitPane2;
+    private javax.swing.JLabel lblEmail;
+    private javax.swing.JLabel lblRole;
+    private javax.swing.JLabel lblSystemTitle;
+    private javax.swing.JPanel menuPanel;
+    private javax.swing.JPanel rightPanel;
+    private javax.swing.JPanel topPanel;
     private javax.swing.JPanel workArea;
     // End of variables declaration//GEN-END:variables
 }
