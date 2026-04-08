@@ -24,6 +24,8 @@ private ArrayList<UserAccount> userList;
         this.enterprise = enterprise;
         userList = new ArrayList<>();
         userList.add(new UserAccount("platform", "123", "PLATFORM_MGR"));
+        userList.add(new UserAccount("admin", "123", "SYSTEM_ADMIN"));
+
     }
 
     /**
@@ -132,6 +134,16 @@ String username = txtUsername.getText();
     if (foundUser.getRole().equals("PLATFORM_MGR")) {
         this.setContentPane(new PlatformWorkAreaJPanel(null));
         this.revalidate();
+   } else if (foundUser.getRole().equals("SYSTEM_ADMIN")) {
+            this.setContentPane(new AdminWorkAreaJPanel(enterprise));
+            this.revalidate();     
+        
+        
+        
+        
+        
+        
+        
     } else {
         JOptionPane.showMessageDialog(this, "Role not supported yet");
     }
