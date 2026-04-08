@@ -4,6 +4,7 @@
  */
 package ui.main;
 
+import business.enterprise.Enterprise;
 import ui.order.OrderJPanel;
 import ui.product.ManageProductJPanel;
 import ui.report.ReportViewerJPanel;
@@ -13,12 +14,14 @@ import ui.report.ReportViewerJPanel;
  * @author stelladong
  */
 public class MainJFrame extends javax.swing.JFrame {
+    private Enterprise enterprise;
 
     /**
      * Creates new form MainJFrame
      */
     public MainJFrame() {
         initComponents();
+        this.enterprise = enterprise;
     }
 
     /**
@@ -182,7 +185,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnManageProductsActionPerformed
 
     private void btnViewReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewReportsActionPerformed
-    ReportViewerJPanel panel = new ReportViewerJPanel(workArea);
+    ReportViewerJPanel panel = new ReportViewerJPanel(workArea, enterprise);
     workArea.add("ReportViewerPanel", panel);
 
     java.awt.CardLayout layout = (java.awt.CardLayout) workArea.getLayout();

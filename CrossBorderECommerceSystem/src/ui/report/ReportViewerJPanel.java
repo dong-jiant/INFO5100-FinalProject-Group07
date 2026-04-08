@@ -4,20 +4,28 @@
  */
 package ui.report;
 
+import business.enterprise.Enterprise;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author stelladong
  */
 public class ReportViewerJPanel extends javax.swing.JPanel {
-
+ private JPanel workArea;
+ private Enterprise enterprise;
 
     /**
      * Creates new form ReportViewerPanel
      */
-    public ReportViewerJPanel(JPanel workArea) {
+     public ReportViewerJPanel(JPanel workArea, Enterprise enterprise) {
         initComponents();
+        this.workArea = workArea;
+        this.enterprise = enterprise;
+
+        populateOrderSummaryTable();
+        populateShipmentSummaryTable();
     }
 
     /**
@@ -135,4 +143,35 @@ public class ReportViewerJPanel extends javax.swing.JPanel {
     private javax.swing.JTable tblOrderSummary;
     private javax.swing.JTable tblShipmentSummary;
     // End of variables declaration//GEN-END:variables
+
+    private void populateOrderSummaryTable() {
+    DefaultTableModel model = (DefaultTableModel) tblOrderSummary.getModel();
+    model.setRowCount(0);
+
+    Object[] row1 = {"O001", "Processing", 120.00};
+    Object[] row2 = {"O002", "Completed", 88.50};
+
+    model.addRow(row1);
+    model.addRow(row2);    
+        
+        
+        
+        
+        
+        
+    }
+
+    private void populateShipmentSummaryTable() {
+    DefaultTableModel model = (DefaultTableModel) tblShipmentSummary.getModel();
+    model.setRowCount(0);
+
+    Object[] row1 = {"S001", "O001", "In Transit", "2026-04-10"};
+    Object[] row2 = {"S002", "O002", "Delivered", "2026-04-08"};
+
+    model.addRow(row1);
+    model.addRow(row2);
+        
+        
+        
+    }
 }
