@@ -5,6 +5,8 @@
 package ui.main;
 
 import ui.order.OrderJPanel;
+import ui.product.ManageProductJPanel;
+import ui.report.ReportViewerJPanel;
 
 /**
  *
@@ -33,6 +35,7 @@ public class MainJFrame extends javax.swing.JFrame {
         btnViewOrders = new javax.swing.JButton();
         btnManageProducts = new javax.swing.JButton();
         btnManageUsers = new javax.swing.JButton();
+        btnViewReports = new javax.swing.JButton();
         rightPanel = new javax.swing.JPanel();
         topPanel = new javax.swing.JPanel();
         lblSystemTitle = new javax.swing.JLabel();
@@ -51,8 +54,20 @@ public class MainJFrame extends javax.swing.JFrame {
         });
 
         btnManageProducts.setText("Manage Products");
+        btnManageProducts.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnManageProductsActionPerformed(evt);
+            }
+        });
 
         btnManageUsers.setText("Manage Users");
+
+        btnViewReports.setText("View Reports");
+        btnViewReports.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewReportsActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout menuPanelLayout = new javax.swing.GroupLayout(menuPanel);
         menuPanel.setLayout(menuPanelLayout);
@@ -64,6 +79,10 @@ public class MainJFrame extends javax.swing.JFrame {
                     .addComponent(btnManageUsers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnViewOrders, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(menuPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnViewReports)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         menuPanelLayout.setVerticalGroup(
             menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -74,7 +93,9 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addComponent(btnManageProducts, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnManageUsers)
-                .addContainerGap(331, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnViewReports)
+                .addContainerGap(290, Short.MAX_VALUE))
         );
 
         jSplitPane2.setTopComponent(menuPanel);
@@ -136,8 +157,41 @@ public class MainJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnViewOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewOrdersActionPerformed
-        // TODO add your handling code here:
+    OrderJPanel panel = new OrderJPanel(workArea);
+    workArea.add("OrderPanel", panel);
+
+    java.awt.CardLayout layout = (java.awt.CardLayout) workArea.getLayout();
+    layout.show(workArea, "OrderPanel");
+
+
+
     }//GEN-LAST:event_btnViewOrdersActionPerformed
+
+    private void btnManageProductsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageProductsActionPerformed
+    ManageProductJPanel panel = new ManageProductJPanel(workArea);
+    workArea.add("ManageProductPanel", panel);
+
+    java.awt.CardLayout layout = (java.awt.CardLayout) workArea.getLayout();
+    layout.show(workArea, "ManageProductPanel");   
+        
+        
+        
+        
+        
+        
+    }//GEN-LAST:event_btnManageProductsActionPerformed
+
+    private void btnViewReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewReportsActionPerformed
+    ReportViewerJPanel panel = new ReportViewerJPanel(workArea);
+    workArea.add("ReportViewerPanel", panel);
+
+    java.awt.CardLayout layout = (java.awt.CardLayout) workArea.getLayout();
+    layout.show(workArea, "ReportViewerPanel");
+
+
+
+
+    }//GEN-LAST:event_btnViewReportsActionPerformed
 
     /**
      * @param args the command line arguments
@@ -149,6 +203,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnManageProducts;
     private javax.swing.JButton btnManageUsers;
     private javax.swing.JButton btnViewOrders;
+    private javax.swing.JButton btnViewReports;
     private javax.swing.JSplitPane jSplitPane2;
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblRole;

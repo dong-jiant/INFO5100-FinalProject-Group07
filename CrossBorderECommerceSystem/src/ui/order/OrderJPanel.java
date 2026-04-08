@@ -6,6 +6,7 @@ package ui.order;
 import business.order.Order;
 import business.order.OrderItem;
 import business.product.Product;
+import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 /**
  *
@@ -13,10 +14,12 @@ import javax.swing.table.DefaultTableModel;
  */
 public class OrderJPanel extends javax.swing.JPanel {
 
+    
+
     /**
      * Creates new form OrderPanel
      */
-    public OrderJPanel() {
+    public OrderJPanel(JPanel workArea) {
         initComponents();
         Order order = createDemoOrder();
         populateTable(order);
@@ -81,15 +84,16 @@ public class OrderJPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(139, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31))
+                .addGap(56, 56, 56))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(28, 28, 28)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 26, Short.MAX_VALUE))
+                .addContainerGap(109, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
