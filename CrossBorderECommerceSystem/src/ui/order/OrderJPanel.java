@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package ui;
+package ui.order;
 import business.order.Order;
 import business.order.OrderItem;
 import business.product.Product;
@@ -11,12 +11,12 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author stelladong
  */
-public class OrderPanel extends javax.swing.JPanel {
+public class OrderJPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form OrderPanel
      */
-    public OrderPanel() {
+    public OrderJPanel() {
         initComponents();
         Order order = createDemoOrder();
         populateTable(order);
