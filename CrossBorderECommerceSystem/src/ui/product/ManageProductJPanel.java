@@ -4,16 +4,20 @@
  */
 package ui.product;
 
+import javax.swing.JPanel;
+
 /**
  *
  * @author stelladong
  */
 public class ManageProductJPanel extends javax.swing.JPanel {
 
+
+
     /**
      * Creates new form ManageProductJPanel
      */
-    public ManageProductJPanel() {
+    public ManageProductJPanel(JPanel workArea) {
         initComponents();
     }
 

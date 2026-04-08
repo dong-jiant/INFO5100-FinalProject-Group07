@@ -3,25 +3,44 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package ui.order;
+import business.enterprise.Enterprise;
 import business.order.Order;
 import business.order.OrderItem;
 import business.product.Product;
+import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author stelladong
  */
 public class OrderJPanel extends javax.swing.JPanel {
+    private javax.swing.JPanel workArea;
 
-    /**
-     * Creates new form OrderPanel
-     */
-    public OrderJPanel() {
+
+    
+
+    public OrderJPanel(JPanel workArea, Enterprise enterprise) {
         initComponents();
-        Order order = createDemoOrder();
-        populateTable(order);
+        this.workArea = workArea;
+        populateTable();
     }
 
+    private void populateTable() {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+
+        Object[] row1 = new Object[3];
+        row1[0] = "ORD001";
+        row1[1] = "Created";
+        row1[2] = 3600.0;
+        model.addRow(row1);
+
+        Object[] row2 = new Object[3];
+        row2[0] = "ORD002";
+        row2[1] = "Shipped";
+        row2[2] = 1800.0;
+        model.addRow(row2);
+    }
     private Order createDemoOrder() {
         Product p1 = new Product("iPhone", 1000);
         Product p2 = new Product("Laptop", 2000);
@@ -36,21 +55,6 @@ public class OrderJPanel extends javax.swing.JPanel {
         return order;
     }
 
-    private void populateTable(Order order) {
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        model.setRowCount(0);
-
-        for (OrderItem item : order.getItems()) {
-            Object[] row = new Object[4];
-            row[0] = item.getProduct().getName();
-            row[1] = item.getQuantity();
-            row[2] = item.getPrice();
-            row[3] = item.getTotal();
-
-            model.addRow(row);
-        }
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -62,39 +66,75 @@ public class OrderJPanel extends javax.swing.JPanel {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        btnViewDetail = new javax.swing.JButton();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Product", "Quantity", "Price", "Total"
+                "Order ID", "Status", "Total Price"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
+
+        btnViewDetail.setText("View Detail");
+        btnViewDetail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewDetailActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(139, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31))
+                .addGap(56, 56, 56))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(53, 53, 53)
+                .addComponent(btnViewDetail)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 26, Short.MAX_VALUE))
+                .addGap(28, 28, 28)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(83, 83, 83)
+                .addComponent(btnViewDetail)
+                .addContainerGap(68, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnViewDetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewDetailActionPerformed
+   int selectedRow = jTable1.getSelectedRow();
+
+if (selectedRow < 0) {
+    javax.swing.JOptionPane.showMessageDialog(this, "Please select an order.");
+    return;
+}
+
+    Order order = createDemoOrder();
+
+OrderDetailJPanel panel = new OrderDetailJPanel(workArea, order);
+workArea.add("OrderDetailJPanel", panel);
+
+java.awt.CardLayout layout = (java.awt.CardLayout) workArea.getLayout();
+layout.show(workArea, "OrderDetailJPanel");
+        
+        
+        
+    }//GEN-LAST:event_btnViewDetailActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnViewDetail;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
