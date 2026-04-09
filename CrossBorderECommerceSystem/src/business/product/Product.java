@@ -30,6 +30,10 @@ public class Product {
         this.supplierId = supplierId;
     }
 
+    public Product(String name, double price) {
+        this("P-UNKNOWN", name, "General", price, 0, "SUP-UNKNOWN");
+    }
+
     public void updatePrice(double newPrice) {
         if (newPrice < 0) throw new IllegalArgumentException("Price cannot be negative");
         this.price = newPrice;
@@ -52,12 +56,17 @@ public class Product {
     public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }
     public double getPrice() { return price; }
+    public void setPrice(double price) {
+        if (price < 0) throw new IllegalArgumentException("Price cannot be negative");
+        this.price = price;
+    }
     public int getStockQty() { return stockQty; }
     public void setStockQty(int qty) {
         if (qty < 0) throw new IllegalArgumentException("Stock cannot be negative");
         this.stockQty = qty;
     }
     public String getSupplierId() { return supplierId; }
+    public void setSupplierId(String supplierId) { this.supplierId = supplierId; }
 
     @Override
     public String toString() { return String.format("[%s] %s - $%.2f (Stock: %d)", productId, name, price, stockQty); }
