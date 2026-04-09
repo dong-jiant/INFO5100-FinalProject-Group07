@@ -4,21 +4,41 @@
  */
 package ui.product;
 
+import business.enterprise.SupplierEnterprise;
+import business.product.Product;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author stelladong
  */
 public class ManageProductJPanel extends javax.swing.JPanel {
-
-
+    private final JPanel workArea;
+    private final SupplierEnterprise supplierEnterprise;
+    private JTable productTable;
+    private JTextField txtName;
+    private JTextField txtCategory;
+    private JTextField txtPrice;
+    private JTextField txtStock;
+    private DefaultTableModel model;
 
     /**
      * Creates new form ManageProductJPanel
      */
-    public ManageProductJPanel(JPanel workArea) {
+    public ManageProductJPanel(JPanel workArea, SupplierEnterprise supplierEnterprise) {
+        this.workArea = workArea;
+        this.supplierEnterprise = supplierEnterprise;
         initComponents();
+        populateTable();
     }
 
     /**
@@ -29,19 +49,203 @@ public class ManageProductJPanel extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        setLayout(new BorderLayout(12, 12));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        model = new DefaultTableModel(
+                new Object[]{"Product ID", "Name", "Category", "Price", "Stock", "Supplier"},
+                0
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        productTable = new JTable(model);
+        add(new JScrollPane(productTable), BorderLayout.CENTER);
+
+        JPanel formPanel = new JPanel(new GridLayout(5, 2, 6, 6));
+        txtName = new JTextField();
+        txtCategory = new JTextField();
+        txtPrice = new JTextField();
+        txtStock = new JTextField();
+
+        formPanel.add(new JLabel("Product Name"));
+        formPanel.add(txtName);
+        formPanel.add(new JLabel("Category"));
+        formPanel.add(txtCategory);
+        formPanel.add(new JLabel("Unit Price"));
+        formPanel.add(txtPrice);
+        formPanel.add(new JLabel("Stock Qty"));
+        formPanel.add(txtStock);
+
+        JButton btnCreate = new JButton("Create");
+        JButton btnUpdate = new JButton("Update");
+        JButton btnDelete = new JButton("Delete");
+        JButton btnRestock = new JButton("Restock +20");
+        JButton btnLoad = new JButton("Load Selected");
+        JButton btnBack = new JButton("<< Back");
+
+        btnCreate.addActionListener(e -> createProduct());
+        btnUpdate.addActionListener(e -> updateProduct());
+        btnDelete.addActionListener(e -> deleteProduct());
+        btnRestock.addActionListener(e -> restockProduct(20));
+        btnLoad.addActionListener(e -> loadSelectedRow());
+        btnBack.addActionListener(e -> goBack());
+
+        JPanel actionPanel = new JPanel(new GridLayout(2, 3, 6, 6));
+        actionPanel.add(btnCreate);
+        actionPanel.add(btnUpdate);
+        actionPanel.add(btnDelete);
+        actionPanel.add(btnRestock);
+        actionPanel.add(btnLoad);
+        actionPanel.add(btnBack);
+
+        JPanel south = new JPanel(new BorderLayout(8, 8));
+        south.add(formPanel, BorderLayout.CENTER);
+        south.add(actionPanel, BorderLayout.SOUTH);
+        add(south, BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void populateTable() {
+        model.setRowCount(0);
+        for (Product product : supplierEnterprise.getProductDirectory().getProductList()) {
+            model.addRow(new Object[]{
+                product.getProductId(),
+                product.getName(),
+                product.getCategory(),
+                product.getPrice(),
+                product.getStockQty(),
+                product.getSupplierId()
+            });
+        }
+    }
+
+    private void createProduct() {
+        try {
+            String name = requireNotBlank(txtName.getText(), "Product name");
+            String category = requireNotBlank(txtCategory.getText(), "Category");
+            double price = parsePrice(txtPrice.getText());
+            int stock = parseStock(txtStock.getText());
+
+            supplierEnterprise.getProductDirectory().addProduct(
+                    name,
+                    category,
+                    price,
+                    stock,
+                    supplierEnterprise.getSupplierId()
+            );
+            populateTable();
+            clearForm();
+        } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+    }
+
+    private void updateProduct() {
+        Product selected = getSelectedProduct();
+        if (selected == null) {
+            return;
+        }
+
+        try {
+            selected.setName(requireNotBlank(txtName.getText(), "Product name"));
+            selected.setCategory(requireNotBlank(txtCategory.getText(), "Category"));
+            selected.setPrice(parsePrice(txtPrice.getText()));
+            selected.setStockQty(parseStock(txtStock.getText()));
+            populateTable();
+            clearForm();
+        } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+    }
+
+    private void deleteProduct() {
+        Product selected = getSelectedProduct();
+        if (selected == null) {
+            return;
+        }
+        supplierEnterprise.getProductDirectory().removeProduct(selected);
+        populateTable();
+        clearForm();
+    }
+
+    private void restockProduct(int delta) {
+        Product selected = getSelectedProduct();
+        if (selected == null) {
+            return;
+        }
+        selected.updateStock(delta);
+        populateTable();
+    }
+
+    private void loadSelectedRow() {
+        Product selected = getSelectedProduct();
+        if (selected == null) {
+            return;
+        }
+        txtName.setText(selected.getName());
+        txtCategory.setText(selected.getCategory());
+        txtPrice.setText(String.valueOf(selected.getPrice()));
+        txtStock.setText(String.valueOf(selected.getStockQty()));
+    }
+
+    private Product getSelectedProduct() {
+        int row = productTable.getSelectedRow();
+        if (row < 0) {
+            JOptionPane.showMessageDialog(this, "Please select one product first.");
+            return null;
+        }
+        String productId = String.valueOf(model.getValueAt(row, 0));
+        Product product = supplierEnterprise.getProductDirectory().findById(productId);
+        if (product == null) {
+            JOptionPane.showMessageDialog(this, "Selected product does not exist anymore.");
+        }
+        return product;
+    }
+
+    private String requireNotBlank(String value, String fieldName) {
+        if (value == null || value.trim().isEmpty()) {
+            throw new IllegalArgumentException(fieldName + " cannot be empty.");
+        }
+        return value.trim();
+    }
+
+    private double parsePrice(String value) {
+        try {
+            double price = Double.parseDouble(value.trim());
+            if (price < 0) {
+                throw new IllegalArgumentException("Price must be >= 0.");
+            }
+            return price;
+        } catch (NumberFormatException ex) {
+            throw new IllegalArgumentException("Price must be a valid number.");
+        }
+    }
+
+    private int parseStock(String value) {
+        try {
+            int stock = Integer.parseInt(value.trim());
+            if (stock < 0) {
+                throw new IllegalArgumentException("Stock must be >= 0.");
+            }
+            return stock;
+        } catch (NumberFormatException ex) {
+            throw new IllegalArgumentException("Stock must be an integer.");
+        }
+    }
+
+    private void clearForm() {
+        txtName.setText("");
+        txtCategory.setText("");
+        txtPrice.setText("");
+        txtStock.setText("");
+    }
+
+    private void goBack() {
+        workArea.remove(this);
+        java.awt.CardLayout layout = (java.awt.CardLayout) workArea.getLayout();
+        layout.previous(workArea);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
