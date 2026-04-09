@@ -4,6 +4,7 @@
  */
 package ui.main;
 
+import business.ConfigureSystem;
 import business.enterprise.Enterprise;
 import business.user.UserAccount;
 import java.util.ArrayList;
@@ -180,7 +181,7 @@ String username = txtUsername.getText();
             java.util.logging.Logger.getLogger(LoginJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        Enterprise enterprise = new Enterprise();
+        final Enterprise enterprise = ConfigureSystem.initialize();
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
