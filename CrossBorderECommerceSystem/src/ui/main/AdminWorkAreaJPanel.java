@@ -71,6 +71,11 @@ private Enterprise enterprise;
         });
 
         btnManageUsers.setText("Manage Users");
+        btnManageUsers.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnManageUsersActionPerformed(evt);
+            }
+        });
 
         btnSystemOverview.setText("System Overview");
 
@@ -150,6 +155,16 @@ private Enterprise enterprise;
 
 
     }//GEN-LAST:event_btnViewReportsActionPerformed
+
+    private void btnManageUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageUsersActionPerformed
+ ManageUsersJPanel panel = new ManageUsersJPanel(workArea, enterprise);
+    workArea.add("ManageUsersJPanel", panel);
+
+    CardLayout layout = (CardLayout) workArea.getLayout();
+    layout.next(workArea);
+
+
+    }//GEN-LAST:event_btnManageUsersActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
