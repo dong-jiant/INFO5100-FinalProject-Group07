@@ -6,8 +6,8 @@ package ui.main;
 
 import business.ConfigureSystem;
 import business.enterprise.Enterprise;
+import business.enterprise.SupplierEnterprise;
 import business.user.UserAccount;
-import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,16 +16,14 @@ import javax.swing.JOptionPane;
  */
 public class LoginJFrame extends javax.swing.JFrame {
 private Enterprise enterprise;
-private ArrayList<UserAccount> userList;
+private java.util.List<UserAccount> userList;
     /**
      * Creates new form LoginJFrame
      */
     public LoginJFrame(Enterprise enterprise) {
         initComponents();
         this.enterprise = enterprise;
-        userList = new ArrayList<>();
-        userList.add(new UserAccount("platform", "123", "PLATFORM_MGR"));
-        userList.add(new UserAccount("admin", "123", "SYSTEM_ADMIN"));
+        userList = enterprise.getUserAccountDirectory().getUserAccountList();
 
     }
 
@@ -118,6 +116,11 @@ private ArrayList<UserAccount> userList;
 String username = txtUsername.getText();
     String password = String.valueOf(txtPassword.getPassword());
 
+    if (username == null || username.trim().isEmpty() || password == null || password.trim().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Username and password are required.");
+        return;
+    }
+
     UserAccount foundUser = null;
 
     for (UserAccount ua : userList) {
@@ -133,11 +136,18 @@ String username = txtUsername.getText();
     }
 
     if (foundUser.getRole().equals("PLATFORM_MGR")) {
-        this.setContentPane(new PlatformWorkAreaJPanel(null));
+        this.setContentPane(new PlatformWorkAreaJPanel(enterprise));
         this.revalidate();
    } else if (foundUser.getRole().equals("SYSTEM_ADMIN")) {
             this.setContentPane(new AdminWorkAreaJPanel(enterprise));
             this.revalidate();     
+    } else if (foundUser.getRole().equals("SUPPLIER_MANAGER")) {
+        if (enterprise instanceof SupplierEnterprise) {
+            this.setContentPane(new SupplierWorkAreaJPanel((SupplierEnterprise) enterprise));
+            this.revalidate();
+        } else {
+            JOptionPane.showMessageDialog(this, "Current enterprise is not a supplier enterprise.");
+        }
         
         
         
