@@ -5,10 +5,12 @@
 package ui.main;
 
 import business.enterprise.Enterprise;
+import business.user.Person;
 import java.awt.CardLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
+import business.user.UserAccount;
 
 /**
  *
@@ -134,95 +136,94 @@ public class ManageUsersJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddUserActionPerformed
-     String userId = javax.swing.JOptionPane.showInputDialog(this, "Enter User ID:");
-    if (userId == null || userId.trim().isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this, "User ID cannot be empty.", "Warning", javax.swing.JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-
-    String username = javax.swing.JOptionPane.showInputDialog(this, "Enter Username:");
+                                       
+    String username = JOptionPane.showInputDialog(this, "Enter Username:");
     if (username == null || username.trim().isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Username cannot be empty.", "Warning", javax.swing.JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Username cannot be empty.");
         return;
     }
 
-    String role = javax.swing.JOptionPane.showInputDialog(this, "Enter Role:");
+    String password = JOptionPane.showInputDialog(this, "Enter Password:");
+    if (password == null || password.trim().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Password cannot be empty.");
+        return;
+    }
+
+    String role = JOptionPane.showInputDialog(this, "Enter Role:");
     if (role == null || role.trim().isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Role cannot be empty.", "Warning", javax.swing.JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Role cannot be empty.");
         return;
     }
 
-    AdminUserAccountJPanel panel = new AdminUserAccountJPanel(
-            workArea,
-            enterprise,
-            userId.trim(),
+    Person person = new Person(username.trim(), "N/A");
+
+    enterprise.getUserAccountDirectory().addUserAccount(
             username.trim(),
+            password.trim(),
             role.trim(),
-            this
+            person
     );
 
-    workArea.add("AdminUserAccountJPanel", panel);
-    java.awt.CardLayout layout = (java.awt.CardLayout) workArea.getLayout();
-    layout.next(workArea);
+    populateTable();
+
+    JOptionPane.showMessageDialog(this, "User added successfully.");
         
         
         
     }//GEN-LAST:event_btnAddUserActionPerformed
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
-  int selectedRow = tblUsers.getSelectedRow();
+    int selectedRow = tblUsers.getSelectedRow();
 
     if (selectedRow < 0) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Please select a user first.", "Warning", javax.swing.JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Please select a user first.");
         return;
     }
 
-    javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tblUsers.getModel();
-
-    String userId = model.getValueAt(selectedRow, 0).toString();
-    String username = model.getValueAt(selectedRow, 1).toString();
-    String role = model.getValueAt(selectedRow, 2).toString();
+    DefaultTableModel model = (DefaultTableModel) tblUsers.getModel();
+    UserAccount userAccount = (UserAccount) model.getValueAt(selectedRow, 0);
 
     AdminUserAccountJPanel panel = new AdminUserAccountJPanel(
             workArea,
             enterprise,
-            userId,
-            username,
-            role,
+            userAccount.getUsername(),
+            userAccount.getUsername(),
+            userAccount.getRole(),
             this
     );
 
-     workArea.add("AdminUserAccountJPanel", panel);
-        CardLayout layout = (CardLayout) workArea.getLayout();
-        layout.next(workArea);
-
-
-
-
+    workArea.add("AdminUserAccountJPanel", panel);
+    CardLayout layout = (CardLayout) workArea.getLayout();
+    layout.next(workArea);
     }//GEN-LAST:event_btnNextActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
  int selectedRow = tblUsers.getSelectedRow();
 
     if (selectedRow < 0) {
-        JOptionPane.showMessageDialog(this, "Please select a user to delete.", "Warning", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Please select a user to delete.");
         return;
     }
 
-    int confirm = JOptionPane.showConfirmDialog(this,
-            "Are you sure you want to delete this user?",
+    int confirm = JOptionPane.showConfirmDialog(
+            this,
+            "Are you sure?",
             "Confirm Delete",
-            JOptionPane.YES_NO_OPTION);
+            JOptionPane.YES_NO_OPTION
+    );
 
     if (confirm != JOptionPane.YES_OPTION) {
         return;
     }
 
     DefaultTableModel model = (DefaultTableModel) tblUsers.getModel();
-    model.removeRow(selectedRow);
+    UserAccount userAccount = (UserAccount) model.getValueAt(selectedRow, 0);
 
-    JOptionPane.showMessageDialog(this, "User deleted successfully.");
+    enterprise.getUserAccountDirectory().deleteUserAccount(userAccount);
 
+    populateTable();
+
+    JOptionPane.showMessageDialog(this, "User deleted.");
 
 
 
@@ -252,14 +253,19 @@ public class ManageUsersJPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void populateTable() {
- DefaultTableModel model = (DefaultTableModel) tblUsers.getModel();
+   DefaultTableModel model = (DefaultTableModel) tblUsers.getModel();
     model.setRowCount(0);
 
-    Object[] row1 = {"U001", "admin", "System Admin", "N/A", "N/A"};
-    Object[] row2 = {"U002", "platform_mgr", "Platform Manager", "N/A", "N/A"};
-    Object[] row3 = {"U003", "customer_service", "Customer Service", "N/A", "N/A"};
+    for (UserAccount userAccount : enterprise.getUserAccountDirectory().getUserAccountList()) {
+        Object[] row = new Object[5];
+        row[0] = userAccount;
+        row[1] = userAccount.getUsername();
+        row[2] = userAccount.getRole();
+        row[3] = "N/A";
+        row[4] = "N/A";
 
-    model.addRow(row1);
-    model.addRow(row2);
-    model.addRow(row3);    }
+        model.addRow(row);
+    }
+    }
 }
+

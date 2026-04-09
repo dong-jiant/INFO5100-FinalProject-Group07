@@ -1,33 +1,40 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package business;
 
 import business.enterprise.Enterprise;
+import business.user.Person;
 import business.user.UserAccount;
-import java.util.ArrayList;
 
-/**
- *
- * @author stelladong
- */
 public class ConfigureSystem {
-       public static Enterprise initialize() {
 
-       
+    public static Enterprise initialize() {
+
         Enterprise enterprise = new Enterprise("E-Commerce Platform");
 
-       
-        ArrayList<UserAccount> userList = new ArrayList<>();
+        Person p1 = new Person("Admin", "admin@test.com");
+        Person p2 = new Person("Platform Manager", "platform@test.com");
+        Person p3 = new Person("Customer Service", "service@test.com");
 
-        UserAccount admin = new UserAccount("admin", "123", "SYSTEM_ADMIN");
-        UserAccount platform = new UserAccount("platform", "123", "PLATFORM_MGR");
+        UserAccount admin = enterprise.getUserAccountDirectory().addUserAccount(
+                "admin",
+                "123",
+                "System Admin",
+                p1
+        );
 
-        userList.add(admin);
-        userList.add(platform);
+        UserAccount platform = enterprise.getUserAccountDirectory().addUserAccount(
+                "platform_mgr",
+                "123",
+                "Platform Manager",
+                p2
+        );
 
-    
+        UserAccount customerService = enterprise.getUserAccountDirectory().addUserAccount(
+                "customer_service",
+                "123",
+                "Customer Service",
+                p3
+        );
+
         return enterprise;
     }
-    }
+}
