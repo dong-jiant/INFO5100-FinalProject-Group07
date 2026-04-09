@@ -51,6 +51,7 @@ public class ConfigureSystem {
         enterprise.getProductDirectory().addProduct("Smartphone X1", "Electronics", 799.99, 120, enterprise.getSupplierId());
         enterprise.getProductDirectory().addProduct("Wireless Earbuds Pro", "Accessories", 149.99, 80, enterprise.getSupplierId());
         enterprise.getProductDirectory().addProduct("Portable Charger 20000mAh", "Electronics", 59.90, 45, enterprise.getSupplierId());
+        FakerDataGenerator.generateSupplierProducts(enterprise, 25);
 
         return enterprise;
     }
