@@ -58,7 +58,6 @@
                           <Component id="btnViewReports" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="btnViewOrders" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="btnCustomerService" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnRiskAlerts" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="btnReturns" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="20" max="32767" attributes="0"/>
@@ -74,9 +73,7 @@
                       <Component id="btnCustomerService" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btnReturns" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="btnRiskAlerts" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
                       <Component id="btnViewReports" min="-2" max="-2" attributes="0"/>
                       <EmptySpace pref="115" max="32767" attributes="0"/>
                   </Group>
@@ -104,14 +101,6 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Customer Service"/>
               </Properties>
-            </Component>
-            <Component class="javax.swing.JButton" name="btnRiskAlerts">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Risk Alerts"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRiskAlertsActionPerformed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnReturns">
               <Properties>

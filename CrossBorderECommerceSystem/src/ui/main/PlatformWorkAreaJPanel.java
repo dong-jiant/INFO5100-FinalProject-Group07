@@ -37,7 +37,6 @@ public class PlatformWorkAreaJPanel extends javax.swing.JPanel {
         btnViewOrders = new javax.swing.JButton();
         btnViewReports = new javax.swing.JButton();
         btnCustomerService = new javax.swing.JButton();
-        btnRiskAlerts = new javax.swing.JButton();
         btnReturns = new javax.swing.JButton();
         workArea = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -71,13 +70,6 @@ public class PlatformWorkAreaJPanel extends javax.swing.JPanel {
 
         btnCustomerService.setText("Customer Service");
 
-        btnRiskAlerts.setText("Risk Alerts");
-        btnRiskAlerts.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRiskAlertsActionPerformed(evt);
-            }
-        });
-
         btnReturns.setText("Returns ");
 
         javax.swing.GroupLayout menuPanelLayout = new javax.swing.GroupLayout(menuPanel);
@@ -90,7 +82,6 @@ public class PlatformWorkAreaJPanel extends javax.swing.JPanel {
                     .addComponent(btnViewReports)
                     .addComponent(btnViewOrders)
                     .addComponent(btnCustomerService)
-                    .addComponent(btnRiskAlerts)
                     .addComponent(btnReturns))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
@@ -103,9 +94,7 @@ public class PlatformWorkAreaJPanel extends javax.swing.JPanel {
                 .addComponent(btnCustomerService)
                 .addGap(18, 18, 18)
                 .addComponent(btnReturns)
-                .addGap(18, 18, 18)
-                .addComponent(btnRiskAlerts)
-                .addGap(18, 18, 18)
+                .addGap(59, 59, 59)
                 .addComponent(btnViewReports)
                 .addContainerGap(115, Short.MAX_VALUE))
         );
@@ -146,15 +135,10 @@ public class PlatformWorkAreaJPanel extends javax.swing.JPanel {
         
     }//GEN-LAST:event_btnViewReportsActionPerformed
 
-    private void btnRiskAlertsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRiskAlertsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnRiskAlertsActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCustomerService;
     private javax.swing.JButton btnReturns;
-    private javax.swing.JButton btnRiskAlerts;
     private javax.swing.JButton btnViewOrders;
     private javax.swing.JButton btnViewReports;
     private javax.swing.JLabel jLabel1;
