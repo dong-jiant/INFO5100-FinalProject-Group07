@@ -55,13 +55,13 @@ public class ReportViewerJPanel extends javax.swing.JPanel {
 
         tblOrderSummary.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Order ID", "Status", "Total Price"
+                "Order ID", "Status", "Total Price", "Risk Alert"
             }
         ));
         jScrollPane1.setViewportView(tblOrderSummary);
@@ -144,7 +144,7 @@ public class ReportViewerJPanel extends javax.swing.JPanel {
                     .addComponent(jLabel1)
                     .addComponent(btnBack))
                 .addGap(18, 18, 18)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 467, Short.MAX_VALUE))
+                .addComponent(jTabbedPane1))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -174,13 +174,20 @@ public class ReportViewerJPanel extends javax.swing.JPanel {
     model.setRowCount(0);
 
      for (Order order : getDemoOrders()) {
-        Object[] row = new Object[3];
+        Object[] row = new Object[4];
         row[0] = order.getOrderId();
         row[1] = order.getStatus();
         row[2] = order.getTotalPrice();
+        row[3] = getRiskAlert(order);
         model.addRow(row);   
      }  
     }
+    private String getRiskAlert(Order order) {
+    if (order.getTotalPrice() > 1000) {
+        return "High Value Alert";
+    }
+    return "";
+}
     private ArrayList<Order> getDemoOrders() {
     ArrayList<Order> list = new ArrayList<>();
 
