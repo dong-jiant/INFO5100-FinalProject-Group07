@@ -5,6 +5,10 @@
 package ui.report;
 
 import business.enterprise.Enterprise;
+import business.order.Order;
+import business.order.OrderItem;
+import business.product.Product;
+import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
@@ -45,6 +49,7 @@ public class ReportViewerJPanel extends javax.swing.JPanel {
         panelShipmentSummary = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblShipmentSummary = new javax.swing.JTable();
+        btnBack = new javax.swing.JButton();
 
         jLabel1.setText("Report Viewer Panel");
 
@@ -75,7 +80,7 @@ public class ReportViewerJPanel extends javax.swing.JPanel {
             .addGroup(panelOrderSummaryLayout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Order Summary", panelOrderSummary);
@@ -107,10 +112,17 @@ public class ReportViewerJPanel extends javax.swing.JPanel {
             .addGroup(panelShipmentSummaryLayout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Shipment Summary", panelShipmentSummary);
+
+        btnBack.setText("<<Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -120,20 +132,33 @@ public class ReportViewerJPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(183, 183, 183)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnBack)
+                .addGap(84, 84, 84))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel1)
+                .addGap(17, 17, 17)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(btnBack))
                 .addGap(18, 18, 18)
-                .addComponent(jTabbedPane1))
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 467, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+
+    workArea.remove(this);
+    java.awt.CardLayout layout = (java.awt.CardLayout) workArea.getLayout();
+    layout.previous(workArea);
+
+    }//GEN-LAST:event_btnBackActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBack;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -148,18 +173,40 @@ public class ReportViewerJPanel extends javax.swing.JPanel {
     DefaultTableModel model = (DefaultTableModel) tblOrderSummary.getModel();
     model.setRowCount(0);
 
-    Object[] row1 = {"O001", "Processing", 120.00};
-    Object[] row2 = {"O002", "Completed", 88.50};
-
-    model.addRow(row1);
-    model.addRow(row2);    
-        
-        
-        
-        
-        
-        
+     for (Order order : getDemoOrders()) {
+        Object[] row = new Object[3];
+        row[0] = order.getOrderId();
+        row[1] = order.getStatus();
+        row[2] = order.getTotalPrice();
+        model.addRow(row);   
+     }  
     }
+    private ArrayList<Order> getDemoOrders() {
+    ArrayList<Order> list = new ArrayList<>();
+
+    Product p1 = new Product("iPhone", 1000);
+    Product p2 = new Product("Laptop", 2000);
+    Product p3 = new Product("Headphones", 300);
+
+    Order o1 = new Order();
+    o1.setOrderId("ORD001");
+    o1.setStatus("Processing");
+    o1.addItem(new OrderItem(p1, 1, 1000));
+    o1.addItem(new OrderItem(p3, 2, 250));
+
+    Order o2 = new Order();
+    o2.setOrderId("ORD002");
+    o2.setStatus("Completed");
+    o2.addItem(new OrderItem(p2, 1, 1800));
+
+    list.add(o1);
+    list.add(o2);
+
+    return list;
+}    
+        
+          
+    
 
     private void populateShipmentSummaryTable() {
     DefaultTableModel model = (DefaultTableModel) tblShipmentSummary.getModel();

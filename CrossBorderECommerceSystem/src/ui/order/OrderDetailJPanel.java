@@ -19,6 +19,13 @@ public class OrderDetailJPanel extends javax.swing.JPanel {
         initComponents();
         this.workArea = workArea;
         this.order = order;
+        
+    txtOrderId.setText(order.getOrderId());
+    txtStatus.setText(order.getStatus());
+    lblTotal.setText(String.valueOf(order.getTotalPrice()));
+    txtOrderId.setEditable(false);
+    txtStatus.setEditable(false);
+
         populateTable();
     }
 
@@ -49,6 +56,12 @@ public class OrderDetailJPanel extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDetail = new javax.swing.JTable();
         btnBack = new javax.swing.JButton();
+        lblOrderID = new javax.swing.JLabel();
+        txtOrderId = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        txtStatus = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        lblTotal = new javax.swing.JTextField();
 
         tblDetail.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -70,28 +83,73 @@ public class OrderDetailJPanel extends javax.swing.JPanel {
             }
         });
 
+        lblOrderID.setText("Order ID");
+
+        txtOrderId.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtOrderIdActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Status");
+
+        jLabel2.setText("Total Price");
+
+        lblTotal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lblTotalActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(198, 198, 198)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(236, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(58, 58, 58)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnBack)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel1)
+                        .addComponent(lblOrderID)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(176, 176, 176)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(58, 58, 58)
-                        .addComponent(btnBack)))
-                .addContainerGap(258, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtOrderId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(188, 188, 188))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(88, 88, 88)
-                .addComponent(btnBack)
-                .addContainerGap(99, Short.MAX_VALUE))
+                .addGap(16, 16, 16)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblOrderID)
+                            .addComponent(txtOrderId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(txtStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(35, 35, 35)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnBack)))
+                .addContainerGap(96, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -100,10 +158,24 @@ public class OrderDetailJPanel extends javax.swing.JPanel {
     java.awt.CardLayout layout = (java.awt.CardLayout) workArea.getLayout();
     layout.previous(workArea);    }//GEN-LAST:event_btnBackActionPerformed
 
+    private void txtOrderIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOrderIdActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtOrderIdActionPerformed
+
+    private void lblTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblTotalActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lblTotalActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblOrderID;
+    private javax.swing.JTextField lblTotal;
     private javax.swing.JTable tblDetail;
+    private javax.swing.JTextField txtOrderId;
+    private javax.swing.JTextField txtStatus;
     // End of variables declaration//GEN-END:variables
 }

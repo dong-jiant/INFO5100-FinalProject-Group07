@@ -7,6 +7,7 @@ import business.enterprise.Enterprise;
 import business.order.Order;
 import business.order.OrderItem;
 import business.product.Product;
+import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 /**
@@ -15,13 +16,18 @@ import javax.swing.table.DefaultTableModel;
  */
 public class OrderJPanel extends javax.swing.JPanel {
     private javax.swing.JPanel workArea;
-
+    private Enterprise enterprise;
+    private ArrayList<Order> orderList;
 
     
 
     public OrderJPanel(JPanel workArea, Enterprise enterprise) {
         initComponents();
         this.workArea = workArea;
+        this.enterprise = enterprise;
+        
+        orderList = new ArrayList<>();
+        loadDemoOrders();
         populateTable();
     }
 
@@ -29,31 +35,15 @@ public class OrderJPanel extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
 
-        Object[] row1 = new Object[3];
-        row1[0] = "ORD001";
-        row1[1] = "Created";
-        row1[2] = 3600.0;
-        model.addRow(row1);
-
-        Object[] row2 = new Object[3];
-        row2[0] = "ORD002";
-        row2[1] = "Shipped";
-        row2[2] = 1800.0;
-        model.addRow(row2);
+        for (Order order : orderList) {
+            Object[] row = new Object[3];
+            row[0] = order;
+            row[1] = order.getStatus();
+            row[2] = order.getTotalPrice();
+            model.addRow(row);
     }
-    private Order createDemoOrder() {
-        Product p1 = new Product("iPhone", 1000);
-        Product p2 = new Product("Laptop", 2000);
-
-        OrderItem item1 = new OrderItem(p1, 2, 900);
-        OrderItem item2 = new OrderItem(p2, 1, 1800);
-
-        Order order = new Order();
-        order.addItem(item1);
-        order.addItem(item2);
-
-        return order;
     }
+ 
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -113,20 +103,20 @@ public class OrderJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnViewDetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewDetailActionPerformed
-   int selectedRow = jTable1.getSelectedRow();
+ int selectedRow = jTable1.getSelectedRow();
 
-if (selectedRow < 0) {
-    javax.swing.JOptionPane.showMessageDialog(this, "Please select an order.");
-    return;
-}
+    if (selectedRow < 0) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Please select an order.");
+        return;
+    }
 
-    Order order = createDemoOrder();
+    Order order = (Order) jTable1.getValueAt(selectedRow, 0);
 
-OrderDetailJPanel panel = new OrderDetailJPanel(workArea, order);
-workArea.add("OrderDetailJPanel", panel);
+    OrderDetailJPanel panel = new OrderDetailJPanel(workArea, order);
+    workArea.add("OrderDetailJPanel", panel);
 
-java.awt.CardLayout layout = (java.awt.CardLayout) workArea.getLayout();
-layout.show(workArea, "OrderDetailJPanel");
+    java.awt.CardLayout layout = (java.awt.CardLayout) workArea.getLayout();
+    layout.show(workArea, "OrderDetailJPanel");
         
         
         
@@ -138,4 +128,23 @@ layout.show(workArea, "OrderDetailJPanel");
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
+
+    private void loadDemoOrders() {
+        Product p1 = new Product("iPhone", 1000);
+        Product p2 = new Product("Laptop", 2000);
+        Product p3 = new Product("Headphones", 300);
+
+        Order order1 = new Order();
+        order1.setOrderId("ORD001");
+        order1.setStatus("Created");
+        order1.addItem(new OrderItem(p1, 2, 900));
+        order1.addItem(new OrderItem(p3, 2, 250));
+
+        Order order2 = new Order();
+        order2.setOrderId("ORD002");
+        order2.setStatus("Shipped");
+        order2.addItem(new OrderItem(p2, 1, 1800));
+
+        orderList.add(order1);
+        orderList.add(order2);    }
 }
