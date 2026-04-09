@@ -12,6 +12,8 @@ import java.util.ArrayList;
  */
 public class Order {
     private ArrayList<OrderItem> items;
+    private String orderId;
+    private String status;
 
     public Order() {
         this.items = new ArrayList<>();
@@ -32,5 +34,24 @@ public class Order {
         }
         return total;
     }
+    public String getOrderId() {
+    return orderId;
+}
+
+public void setOrderId(String orderId) {
+    this.orderId = orderId;
+}
+
+public String getStatus() {
+    return status;
+}
+
+public void setStatus(String status) {
+    this.status = status;
+}
+@Override
+public String toString() {
+    return orderId;
+}
     
 }
