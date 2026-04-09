@@ -4,6 +4,7 @@
  */
 package ui.main;
 
+import business.ConfigureSystem;
 import business.enterprise.Enterprise;
 import business.user.UserAccount;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ private ArrayList<UserAccount> userList;
     /**
      * Creates new form LoginJFrame
      */
-    public LoginJFrame() {
+    public LoginJFrame(Enterprise enterprise) {
         initComponents();
         this.enterprise = enterprise;
         userList = new ArrayList<>();
@@ -180,14 +181,16 @@ String username = txtUsername.getText();
             java.util.logging.Logger.getLogger(LoginJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        final Enterprise enterprise = ConfigureSystem.initialize();
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LoginJFrame().setVisible(true);
-            }
-        });
-    }
+                  new LoginJFrame(enterprise).setVisible(true);
+                  
+        }
+    });
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;

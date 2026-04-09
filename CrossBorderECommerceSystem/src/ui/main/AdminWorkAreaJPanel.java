@@ -22,9 +22,12 @@ private Enterprise enterprise;
     /**
      * Creates new form AdminWorkAreaJPanel
      */
-    public AdminWorkAreaJPanel(Enterprise enterprise1) {
-        initComponents();
-        this.enterprise = enterprise;
+    public AdminWorkAreaJPanel(Enterprise enterprise) {
+    initComponents();
+    this.enterprise = enterprise;
+    System.out.println("AdminWorkAreaJPanel enterprise = " + enterprise);
+    
+
     }
 
     /**
