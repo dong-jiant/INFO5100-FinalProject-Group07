@@ -106,10 +106,6 @@ public ManageUsersJPanel(JPanel workArea, Network network) {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(100, 100, 100))
             .addGroup(layout.createSequentialGroup()
-                .addGap(253, 253, 253)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addGap(60, 60, 60)
                 .addComponent(btnBack)
                 .addGap(78, 78, 78)
@@ -119,6 +115,10 @@ public ManageUsersJPanel(JPanel workArea, Network network) {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
                 .addComponent(btnNext)
                 .addGap(38, 38, 38))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(290, 290, 290)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -138,37 +138,57 @@ public ManageUsersJPanel(JPanel workArea, Network network) {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddUserActionPerformed
-                                       
-    String username = JOptionPane.showInputDialog(this, "Enter Username:");
-    if (username == null || username.trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Username cannot be empty.");
-        return;
+String username = JOptionPane.showInputDialog(this, "Enter Username:");
+if (username == null || username.trim().isEmpty()) {
+    JOptionPane.showMessageDialog(this, "Username cannot be empty.");
+    return;
+}
+
+String password = JOptionPane.showInputDialog(this, "Enter Password:");
+if (password == null || password.trim().isEmpty()) {
+    JOptionPane.showMessageDialog(this, "Password cannot be empty.");
+    return;
+}
+
+String role = JOptionPane.showInputDialog(this, "Enter Role:");
+if (role == null || role.trim().isEmpty()) {
+    JOptionPane.showMessageDialog(this, "Role cannot be empty.");
+    return;
+}
+
+String[] enterpriseNames = new String[network.getEnterprises().size()];
+for (int i = 0; i < network.getEnterprises().size(); i++) {
+    enterpriseNames[i] = network.getEnterprises().get(i).getName();
+}
+String selectedName = (String) JOptionPane.showInputDialog(
+        this,
+        "Select Enterprise:",
+        "Enterprise",
+        JOptionPane.QUESTION_MESSAGE,
+        null,
+        enterpriseNames,
+        enterpriseNames[0]
+);
+if (selectedName == null) return;
+
+Enterprise target = null;
+for (Enterprise e : network.getEnterprises()) {
+    if (e.getName().equals(selectedName)) {
+        target = e;
+        break;
     }
+}
 
-    String password = JOptionPane.showInputDialog(this, "Enter Password:");
-    if (password == null || password.trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Password cannot be empty.");
-        return;
-    }
-
-    String role = JOptionPane.showInputDialog(this, "Enter Role:");
-    if (role == null || role.trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Role cannot be empty.");
-        return;
-    }
-
-    Person person = new Person(username.trim(), "N/A");
-
-    enterprise.getUserAccountDirectory().addUserAccount(
-            username.trim(),
-            password.trim(),
-            role.trim(),
-            person
-    );
-
-    populateTable();
-
-    JOptionPane.showMessageDialog(this, "User added successfully.");
+Person person = new Person(username.trim(), "N/A");
+target.getUserAccountDirectory().addUserAccount(
+        username.trim(),
+        password.trim(),
+        role.trim(),
+        person
+);
+populateTable();
+JOptionPane.showMessageDialog(this, "User added successfully.");
+    
         
         
         
