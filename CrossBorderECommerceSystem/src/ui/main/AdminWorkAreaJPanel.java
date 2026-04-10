@@ -192,13 +192,25 @@ public AdminWorkAreaJPanel(Network network, Enterprise enterprise) {
     }//GEN-LAST:event_btnViewOrdersActionPerformed
 
     private void btnViewReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewReportsActionPerformed
-    ReportViewerJPanel panel = new ReportViewerJPanel(workArea, enterprise);
+   PlatformEnterprise platformEnterprise = null;
+
+    for (Enterprise e : network.getEnterprises()) {
+        if (e instanceof PlatformEnterprise) {
+            platformEnterprise = (PlatformEnterprise) e;
+            break;
+        }
+    }
+
+    if (platformEnterprise == null) {
+        JOptionPane.showMessageDialog(this, "Platform enterprise not found.");
+        return;
+    }
+
+    ReportViewerJPanel panel = new ReportViewerJPanel(workArea, platformEnterprise);
     workArea.add("ReportViewerJPanel", panel);
 
     CardLayout layout = (CardLayout) workArea.getLayout();
     layout.show(workArea, "ReportViewerJPanel");
-
-
 
 
     }//GEN-LAST:event_btnViewReportsActionPerformed

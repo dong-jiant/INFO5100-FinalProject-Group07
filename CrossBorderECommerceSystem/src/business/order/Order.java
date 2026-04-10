@@ -14,6 +14,7 @@ public class Order {
     private String customerEmail;
     private String country;
     private String status;
+    private String shipmentStatus;
     private Date orderDate;
     private ArrayList<OrderItem> items;
 
@@ -21,6 +22,7 @@ public class Order {
         this.items = new ArrayList<>();
         this.orderDate = new Date();
         this.status = "Created";
+        this.shipmentStatus = "Pending";
     }
 
 
@@ -43,17 +45,16 @@ public class Order {
 
     public String getRiskFlag() {
 
-        if (getTotalPrice() > 1000) {
-            return "High Value";
-        }
+         if (getTotalPrice() > 1000) {
+        return "High Value";
+    }
 
+    long days = (new Date().getTime() - orderDate.getTime()) / (1000 * 60 * 60 * 24);
+    if (days > 3 && !shipmentStatus.equals("Shipped") && !shipmentStatus.equals("Delivered")) {
+        return "Delay Risk";
+    }
 
-        long days = (new Date().getTime() - orderDate.getTime()) / (1000 * 60 * 60 * 24);
-        if (days > 3 && !status.equals("Shipped") && !status.equals("Delivered")) {
-            return "Delay Risk";
-        }
-
-        return "Normal";
+    return "Normal";
     }
 
   
@@ -96,6 +97,15 @@ public class Order {
     public void setStatus(String status) {
         this.status = status;
     }
+    public String getShipmentStatus() {
+    return shipmentStatus;
+}
+
+public void setShipmentStatus(String shipmentStatus) {
+    this.shipmentStatus = shipmentStatus;
+}
+    
+    
 
     public Date getOrderDate() {
         return orderDate;

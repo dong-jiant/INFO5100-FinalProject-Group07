@@ -157,8 +157,7 @@ if (network == null) {
         }
 
         if (foundUser.getRole().equals("PLATFORM_MGR")) {
-            this.setContentPane(new PlatformWorkAreaJPanel(matchedEnterprise));
-            this.revalidate();
+this.setContentPane(new PlatformWorkAreaJPanel(network, matchedEnterprise));            this.revalidate();
         } else if (foundUser.getRole().equals("SYSTEM_ADMIN")) {
             this.setContentPane(new AdminWorkAreaJPanel(network, matchedEnterprise));            this.revalidate();
         } else if (foundUser.getRole().equals("SUPPLIER_MANAGER")) {
