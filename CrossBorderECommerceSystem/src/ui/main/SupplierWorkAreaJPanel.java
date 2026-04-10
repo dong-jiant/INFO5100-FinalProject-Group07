@@ -7,6 +7,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import ui.product.ManageProductJPanel;
+import ui.report.SupplierReportJPanel;
+import ui.request.SupplierWorkRequestJPanel;
 
 /**
  *
@@ -27,8 +29,14 @@ public class SupplierWorkAreaJPanel extends JPanel {
 
         JPanel menuPanel = new JPanel();
         JButton btnManageProducts = new JButton("Manage Supplier Products");
+        JButton btnWorkRequests = new JButton("Process Work Requests");
+        JButton btnSupplierReport = new JButton("Supplier KPI Report");
         btnManageProducts.addActionListener(e -> openProductPanel());
+        btnWorkRequests.addActionListener(e -> openWorkRequestPanel());
+        btnSupplierReport.addActionListener(e -> openSupplierReportPanel());
         menuPanel.add(btnManageProducts);
+        menuPanel.add(btnWorkRequests);
+        menuPanel.add(btnSupplierReport);
 
         workArea = new JPanel(new CardLayout());
         workArea.add(new JLabel("Supplier Dashboard"), "HOME");
@@ -42,5 +50,19 @@ public class SupplierWorkAreaJPanel extends JPanel {
         workArea.add(panel, "ManageProductJPanel");
         CardLayout layout = (CardLayout) workArea.getLayout();
         layout.show(workArea, "ManageProductJPanel");
+    }
+
+    private void openWorkRequestPanel() {
+        SupplierWorkRequestJPanel panel = new SupplierWorkRequestJPanel(workArea, supplierEnterprise);
+        workArea.add(panel, "SupplierWorkRequestJPanel");
+        CardLayout layout = (CardLayout) workArea.getLayout();
+        layout.show(workArea, "SupplierWorkRequestJPanel");
+    }
+
+    private void openSupplierReportPanel() {
+        SupplierReportJPanel panel = new SupplierReportJPanel(workArea, supplierEnterprise);
+        workArea.add(panel, "SupplierReportJPanel");
+        CardLayout layout = (CardLayout) workArea.getLayout();
+        layout.show(workArea, "SupplierReportJPanel");
     }
 }
