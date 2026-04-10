@@ -7,7 +7,9 @@ package ui.main;
 import business.ConfigureSystem;
 import business.enterprise.Enterprise;
 import business.enterprise.SupplierEnterprise;
+import business.network.Network;
 import business.user.UserAccount;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -15,16 +17,19 @@ import javax.swing.JOptionPane;
  * @author stelladong
  */
 public class LoginJFrame extends javax.swing.JFrame {
-private Enterprise enterprise;
-private java.util.List<UserAccount> userList;
+private Network network;
+
     /**
      * Creates new form LoginJFrame
      */
-    public LoginJFrame(Enterprise enterprise) {
-        initComponents();
-        this.enterprise = enterprise;
-        userList = enterprise.getUserAccountDirectory().getUserAccountList();
 
+    
+    /**
+     * Creates new form LoginJFrame
+     */
+    public LoginJFrame(Network network) {
+        initComponents();
+        this.network = network;
     }
 
     /**
@@ -113,52 +118,61 @@ private java.util.List<UserAccount> userList;
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-String username = txtUsername.getText();
-    String password = String.valueOf(txtPassword.getPassword());
+if (network == null) {
+    JOptionPane.showMessageDialog(this, "System not initialized properly.");
+    return;
+}
+        
+        String username = txtUsername.getText();
+        String password = String.valueOf(txtPassword.getPassword());
 
-    if (username == null || username.trim().isEmpty() || password == null || password.trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Username and password are required.");
-        return;
-    }
-
-    UserAccount foundUser = null;
-
-    for (UserAccount ua : userList) {
-        if (ua.getUsername().equals(username) && ua.getPassword().equals(password)) {
-            foundUser = ua;
-            break;
+        if (username == null || username.trim().isEmpty()
+                || password == null || password.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Username and password are required.");
+            return;
         }
-    }
 
-    if (foundUser == null) {
-        JOptionPane.showMessageDialog(this, "Invalid username or password");
-        return;
-    }
+        UserAccount foundUser = null;
+        Enterprise matchedEnterprise = null;
 
-    if (foundUser.getRole().equals("PLATFORM_MGR")) {
-        this.setContentPane(new PlatformWorkAreaJPanel(enterprise));
-        this.revalidate();
-   } else if (foundUser.getRole().equals("SYSTEM_ADMIN")) {
-            this.setContentPane(new AdminWorkAreaJPanel(enterprise));
-            this.revalidate();     
-    } else if (foundUser.getRole().equals("SUPPLIER_MANAGER")) {
-        if (enterprise instanceof SupplierEnterprise) {
-            this.setContentPane(new SupplierWorkAreaJPanel((SupplierEnterprise) enterprise));
+        for (Enterprise enterprise : network.getEnterprises()) {
+            List<UserAccount> userList = enterprise.getUserAccountDirectory().getUserAccountList();
+
+            for (UserAccount ua : userList) {
+                if (ua.getUsername().equals(username) && ua.getPassword().equals(password)) {
+                    foundUser = ua;
+                    matchedEnterprise = enterprise;
+                    break;
+                }
+            }
+
+            if (foundUser != null) {
+                break;
+            }
+        }
+
+        if (foundUser == null) {
+            JOptionPane.showMessageDialog(this, "Invalid username or password");
+            return;
+        }
+
+        if (foundUser.getRole().equals("PLATFORM_MGR")) {
+            this.setContentPane(new PlatformWorkAreaJPanel(matchedEnterprise));
             this.revalidate();
+        } else if (foundUser.getRole().equals("SYSTEM_ADMIN")) {
+            this.setContentPane(new AdminWorkAreaJPanel(matchedEnterprise));
+            this.revalidate();
+        } else if (foundUser.getRole().equals("SUPPLIER_MANAGER")) {
+            if (matchedEnterprise instanceof SupplierEnterprise) {
+                this.setContentPane(new SupplierWorkAreaJPanel((SupplierEnterprise) matchedEnterprise));
+                this.revalidate();
+            } else {
+                JOptionPane.showMessageDialog(this, "Current enterprise is not a supplier enterprise.");
+            }
         } else {
-            JOptionPane.showMessageDialog(this, "Current enterprise is not a supplier enterprise.");
+            JOptionPane.showMessageDialog(this, "Role not supported yet");
         }
-        
-        
-        
-        
-        
-        
-        
-    } else {
-        JOptionPane.showMessageDialog(this, "Role not supported yet");
-    }
-
+    
 
 
 
@@ -191,16 +205,17 @@ String username = txtUsername.getText();
             java.util.logging.Logger.getLogger(LoginJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        final Enterprise enterprise = ConfigureSystem.initialize();
+
+        final Network network = ConfigureSystem.initialize();
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                  new LoginJFrame(enterprise).setVisible(true);
-                  
-        }
-    });
-}
+                new LoginJFrame(network).setVisible(true);
+            }
+        });
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
