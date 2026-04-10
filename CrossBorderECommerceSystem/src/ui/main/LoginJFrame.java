@@ -162,7 +162,7 @@ this.setContentPane(new PlatformWorkAreaJPanel(network, matchedEnterprise));    
             this.setContentPane(new AdminWorkAreaJPanel(network, matchedEnterprise));            this.revalidate();
         } else if (foundUser.getRole().equals("SUPPLIER_MANAGER")) {
             if (matchedEnterprise instanceof SupplierEnterprise) {
-                this.setContentPane(new SupplierWorkAreaJPanel((SupplierEnterprise) matchedEnterprise));
+                this.setContentPane(new SupplierWorkAreaJPanel(network, (SupplierEnterprise) matchedEnterprise));
                 this.revalidate();
             } else {
                 JOptionPane.showMessageDialog(this, "Current enterprise is not a supplier enterprise.");
