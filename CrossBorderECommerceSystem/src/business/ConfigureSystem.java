@@ -18,11 +18,21 @@ public class ConfigureSystem {
                 "China"
         );
 
+        // ===== Platform Enterprise =====
+        PlatformEnterprise platform = new PlatformEnterprise(
+                "ShopGlobal Platform",
+                "PLT-001",
+                "USA"
+        );
+
         Person p1 = new Person("Admin", "admin@test.com");
         Person p2 = new Person("Platform Manager", "platform@test.com");
         Person p3 = new Person("Customer Service", "service@test.com");
         Person p4 = new Person("Supplier Manager", "supplier@test.com");
 
+        // ===== User Accounts =====
+
+        // Admin -> supplier
         supplier.getUserAccountDirectory().addUserAccount(
                 "admin",
                 "123",
@@ -30,20 +40,23 @@ public class ConfigureSystem {
                 p1
         );
 
-        supplier.getUserAccountDirectory().addUserAccount(
+        // Platform Manager -> platform
+        platform.getUserAccountDirectory().addUserAccount(
                 "platform_mgr",
                 "123",
                 "PLATFORM_MGR",
                 p2
         );
 
-        supplier.getUserAccountDirectory().addUserAccount(
+        // Customer Service -> platform
+        platform.getUserAccountDirectory().addUserAccount(
                 "customer_service",
                 "123",
                 "CUSTOMER_SERVICE",
                 p3
         );
 
+        // Supplier Manager -> supplier
         supplier.getUserAccountDirectory().addUserAccount(
                 "supplier",
                 "Supplier@123",
@@ -51,6 +64,7 @@ public class ConfigureSystem {
                 p4
         );
 
+        // ===== Supplier Products =====
         supplier.getProductDirectory().addProduct(
                 "Smartphone X1",
                 "Electronics",
@@ -75,16 +89,8 @@ public class ConfigureSystem {
 
         FakerDataGenerator.generateSupplierProducts(supplier, 25);
 
-        // ===== Platform Enterprise =====
-        PlatformEnterprise platform = new PlatformEnterprise(
-                "ShopGlobal Platform",
-                "PLT-001",
-                "USA"
-        );
-
-        platform.getOrderDirectory().addOrder("Alice Chen", "alice@test.com", "USA");
-        platform.getOrderDirectory().addOrder("Bob Wang", "bob@test.com", "Canada");
-        platform.getOrderDirectory().addOrder("Cathy Liu", "cathy@test.com", "Australia");
+        // ===== Platform Orders=====
+        FakerDataGenerator.generatePlatformOrders(platform, 10);
 
         // ===== Add to Network =====
         network.addEnterprise(supplier);

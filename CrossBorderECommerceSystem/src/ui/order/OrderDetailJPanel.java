@@ -20,11 +20,11 @@ public class OrderDetailJPanel extends javax.swing.JPanel {
         this.workArea = workArea;
         this.order = order;
         
-    txtOrderId.setText(order.getOrderId());
-    txtStatus.setText(order.getStatus());
-    lblTotal.setText(String.valueOf(order.getTotalPrice()));
-    txtOrderId.setEditable(false);
-    txtStatus.setEditable(false);
+     txtOrderId.setText(order.getOrderId());
+        txtStatus.setText(order.getStatus());
+        lblTotal.setText(String.valueOf(order.getTotalPrice()));
+        txtOrderId.setEditable(false);
+        txtStatus.setEditable(false);
 
         populateTable();
     }

@@ -4,6 +4,7 @@
  */
 package ui.order;
 import business.enterprise.Enterprise;
+import business.enterprise.PlatformEnterprise;
 import business.order.Order;
 import business.order.OrderItem;
 import business.product.Product;
@@ -26,8 +27,12 @@ public class OrderJPanel extends javax.swing.JPanel {
         this.workArea = workArea;
         this.enterprise = enterprise;
         
-        orderList = new ArrayList<>();
-        loadDemoOrders();
+        if (enterprise instanceof PlatformEnterprise) {
+            PlatformEnterprise platform = (PlatformEnterprise) enterprise;
+            orderList = platform.getOrderDirectory().getOrderList();
+        } else {
+            orderList = new ArrayList<>();
+        }
         populateTable();
     }
 
@@ -36,10 +41,11 @@ public class OrderJPanel extends javax.swing.JPanel {
         model.setRowCount(0);
 
         for (Order order : orderList) {
-            Object[] row = new Object[3];
+            Object[] row = new Object[4];
             row[0] = order;
             row[1] = order.getStatus();
             row[2] = order.getTotalPrice();
+            row[3] = order.getRiskFlag();
             model.addRow(row);
     }
     }
@@ -60,13 +66,13 @@ public class OrderJPanel extends javax.swing.JPanel {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Order ID", "Status", "Total Price"
+                "Order ID", "Status", "Total Price", "Risk Flag"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -103,20 +109,20 @@ public class OrderJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnViewDetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewDetailActionPerformed
- int selectedRow = jTable1.getSelectedRow();
+   int selectedRow = jTable1.getSelectedRow();
 
-    if (selectedRow < 0) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Please select an order.");
-        return;
-    }
+        if (selectedRow < 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Please select an order.");
+            return;
+        }
 
-    Order order = (Order) jTable1.getValueAt(selectedRow, 0);
+        Order order = (Order) jTable1.getValueAt(selectedRow, 0);
 
-    OrderDetailJPanel panel = new OrderDetailJPanel(workArea, order);
-    workArea.add("OrderDetailJPanel", panel);
+        OrderDetailJPanel panel = new OrderDetailJPanel(workArea, order);
+        workArea.add("OrderDetailJPanel", panel);
 
-    java.awt.CardLayout layout = (java.awt.CardLayout) workArea.getLayout();
-    layout.show(workArea, "OrderDetailJPanel");
+        java.awt.CardLayout layout = (java.awt.CardLayout) workArea.getLayout();
+        layout.show(workArea, "OrderDetailJPanel");
         
         
         
@@ -129,22 +135,4 @@ public class OrderJPanel extends javax.swing.JPanel {
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 
-    private void loadDemoOrders() {
-        Product p1 = new Product("iPhone", 1000);
-        Product p2 = new Product("Laptop", 2000);
-        Product p3 = new Product("Headphones", 300);
-
-        Order order1 = new Order();
-        order1.setOrderId("ORD001");
-        order1.setStatus("Created");
-        order1.addItem(new OrderItem(p1, 2, 900));
-        order1.addItem(new OrderItem(p3, 2, 250));
-
-        Order order2 = new Order();
-        order2.setOrderId("ORD002");
-        order2.setStatus("Shipped");
-        order2.addItem(new OrderItem(p2, 1, 1800));
-
-        orderList.add(order1);
-        orderList.add(order2);    }
 }

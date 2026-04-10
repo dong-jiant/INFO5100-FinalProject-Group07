@@ -4,6 +4,7 @@
  */
 package ui.product;
 
+import business.enterprise.Enterprise;
 import business.enterprise.SupplierEnterprise;
 import business.product.Product;
 import java.awt.BorderLayout;
@@ -30,6 +31,12 @@ public class ManageProductJPanel extends javax.swing.JPanel {
     private JTextField txtPrice;
     private JTextField txtStock;
     private DefaultTableModel model;
+
+    /**
+     * Creates new form ManageProductJPanel
+     */
+
+    
 
     /**
      * Creates new form ManageProductJPanel
@@ -107,7 +114,7 @@ public class ManageProductJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void populateTable() {
-        model.setRowCount(0);
+       model.setRowCount(0);
         for (Product product : supplierEnterprise.getProductDirectory().getProductList()) {
             model.addRow(new Object[]{
                 product.getProductId(),

@@ -160,8 +160,7 @@ if (network == null) {
             this.setContentPane(new PlatformWorkAreaJPanel(matchedEnterprise));
             this.revalidate();
         } else if (foundUser.getRole().equals("SYSTEM_ADMIN")) {
-            this.setContentPane(new AdminWorkAreaJPanel(matchedEnterprise));
-            this.revalidate();
+            this.setContentPane(new AdminWorkAreaJPanel(network, matchedEnterprise));            this.revalidate();
         } else if (foundUser.getRole().equals("SUPPLIER_MANAGER")) {
             if (matchedEnterprise instanceof SupplierEnterprise) {
                 this.setContentPane(new SupplierWorkAreaJPanel((SupplierEnterprise) matchedEnterprise));
