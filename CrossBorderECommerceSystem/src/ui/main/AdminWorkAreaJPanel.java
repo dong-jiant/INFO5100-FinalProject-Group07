@@ -248,8 +248,7 @@ public AdminWorkAreaJPanel(Network network, Enterprise enterprise) {
     }//GEN-LAST:event_btnViewReportsActionPerformed
 
     private void btnManageUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageUsersActionPerformed
- ManageUsersJPanel panel = new ManageUsersJPanel(workArea, enterprise);
-    workArea.add("ManageUsersJPanel", panel);
+ManageUsersJPanel panel = new ManageUsersJPanel(workArea, network);    workArea.add("ManageUsersJPanel", panel);
 
     CardLayout layout = (CardLayout) workArea.getLayout();
     layout.next(workArea);

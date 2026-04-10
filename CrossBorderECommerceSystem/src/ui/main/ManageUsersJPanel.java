@@ -5,6 +5,7 @@
 package ui.main;
 
 import business.enterprise.Enterprise;
+import business.network.Network;
 import business.user.Person;
 import java.awt.CardLayout;
 import javax.swing.JOptionPane;
@@ -19,6 +20,7 @@ import business.user.UserAccount;
 public class ManageUsersJPanel extends javax.swing.JPanel {
     private JPanel workArea;
     private Enterprise enterprise;
+    private Network network;
 
     /**
      * Creates new form ManageUsersJPanel
@@ -28,11 +30,11 @@ public class ManageUsersJPanel extends javax.swing.JPanel {
     /**
      * Creates new form ManageUsersJPanel
      */
-    public ManageUsersJPanel(JPanel workArea, Enterprise enterprise) {
-        initComponents();
-        this.workArea = workArea;
-         this.enterprise = enterprise;
-        populateTable();
+public ManageUsersJPanel(JPanel workArea, Network network) {
+    initComponents();
+    this.workArea = workArea;
+    this.network = network;
+    populateTable();
     }
 
     /**
@@ -254,17 +256,18 @@ public class ManageUsersJPanel extends javax.swing.JPanel {
     void populateTable() {
    DefaultTableModel model = (DefaultTableModel) tblUsers.getModel();
     model.setRowCount(0);
-
-    for (UserAccount userAccount : enterprise.getUserAccountDirectory().getUserAccountList()) {
-        Object[] row = new Object[5];
-        row[0] = userAccount;
-        row[1] = userAccount.getUsername();
-        row[2] = userAccount.getRole();
-        row[3] = "N/A";
-        row[4] = "N/A";
-
-        model.addRow(row);
+    for (Enterprise e : network.getEnterprises()) {
+        for (UserAccount userAccount : e.getUserAccountDirectory().getUserAccountList()) {
+            Object[] row = new Object[5];
+            row[0] = userAccount;
+            row[1] = userAccount.getUsername();
+            row[2] = userAccount.getRole();
+            row[3] = e.getName();
+            row[4] = "N/A";
+            model.addRow(row);
+    }
     }
     }
 }
+
 
