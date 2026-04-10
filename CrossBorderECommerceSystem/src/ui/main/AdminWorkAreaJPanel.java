@@ -5,12 +5,15 @@
 package ui.main;
 
 import business.enterprise.Enterprise;
+import business.enterprise.PlatformEnterprise;
 import business.enterprise.SupplierEnterprise;
+import business.network.Network;
 import java.awt.CardLayout;
 import javax.swing.JOptionPane;
 import ui.order.OrderJPanel;
 import ui.product.ManageProductJPanel;
 import ui.report.ReportViewerJPanel;
+
 
 /**
  *
@@ -18,6 +21,7 @@ import ui.report.ReportViewerJPanel;
  */
 public class AdminWorkAreaJPanel extends javax.swing.JPanel {
 private Enterprise enterprise;
+private Network network;
     /**
      * Creates new form AdminWorkAreaJPanel
      */
@@ -25,12 +29,17 @@ private Enterprise enterprise;
     /**
      * Creates new form AdminWorkAreaJPanel
      */
-    public AdminWorkAreaJPanel(Enterprise enterprise) {
+  
+    /**
+     * Creates new form AdminWorkAreaJPanel
+     */
+    /**
+     * Creates new form AdminWorkAreaJPanel
+     */
+public AdminWorkAreaJPanel(Network network, Enterprise enterprise) {
     initComponents();
+    this.network = network;
     this.enterprise = enterprise;
-    System.out.println("AdminWorkAreaJPanel enterprise = " + enterprise);
-    
-
     }
 
     /**
@@ -135,18 +144,43 @@ private Enterprise enterprise;
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnManageProductsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageProductsActionPerformed
-        if (!(enterprise instanceof SupplierEnterprise)) {
-            JOptionPane.showMessageDialog(this, "Current enterprise does not support supplier product management.");
-            return;
+   SupplierEnterprise supplierEnterprise = null;
+
+    for (Enterprise e : network.getEnterprises()) {
+        if (e instanceof SupplierEnterprise) {
+            supplierEnterprise = (SupplierEnterprise) e;
+            break;
         }
-        ManageProductJPanel panel = new ManageProductJPanel(workArea, (SupplierEnterprise) enterprise);
-        workArea.add("ManageProductJPanel", panel);
-        CardLayout layout = (CardLayout) workArea.getLayout();
-        layout.show(workArea, "ManageProductJPanel");
+    }
+
+    if (supplierEnterprise == null) {
+        JOptionPane.showMessageDialog(this, "Supplier enterprise not found.");
+        return;
+    }
+
+    ManageProductJPanel panel = new ManageProductJPanel(workArea, supplierEnterprise);
+    workArea.add("ManageProductJPanel", panel);
+
+    CardLayout layout = (CardLayout) workArea.getLayout();
+    layout.show(workArea, "ManageProductJPanel");
     }//GEN-LAST:event_btnManageProductsActionPerformed
 
     private void btnViewOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewOrdersActionPerformed
-    OrderJPanel panel = new OrderJPanel(workArea, enterprise);
+     PlatformEnterprise platformEnterprise = null;
+
+    for (Enterprise e : network.getEnterprises()) {
+        if (e instanceof PlatformEnterprise) {
+            platformEnterprise = (PlatformEnterprise) e;
+            break;
+        }
+    }
+
+    if (platformEnterprise == null) {
+        JOptionPane.showMessageDialog(this, "Platform enterprise not found.");
+        return;
+    }
+
+    OrderJPanel panel = new OrderJPanel(workArea, platformEnterprise);
     workArea.add("OrderJPanel", panel);
 
     CardLayout layout = (CardLayout) workArea.getLayout();
