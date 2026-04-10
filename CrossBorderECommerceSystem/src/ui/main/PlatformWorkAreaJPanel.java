@@ -5,7 +5,10 @@
 package ui.main;
 
 import business.enterprise.Enterprise;
+import business.enterprise.PlatformEnterprise;
+import business.network.Network;
 import java.awt.CardLayout;
+import javax.swing.JOptionPane;
 import ui.order.OrderJPanel;
 import ui.report.ReportViewerJPanel;
 /**
@@ -15,9 +18,11 @@ import ui.report.ReportViewerJPanel;
 public class PlatformWorkAreaJPanel extends javax.swing.JPanel {
 
     private Enterprise enterprise;
+    private Network network;
 
-    public PlatformWorkAreaJPanel(Enterprise enterprise) {
+    public PlatformWorkAreaJPanel(Network network, Enterprise enterprise) {
         initComponents();
+        this.network = network;
         this.enterprise = enterprise;
         jSplitPane1.setDividerLocation(180);
     }
@@ -114,20 +119,20 @@ public class PlatformWorkAreaJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnViewOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewOrdersActionPerformed
-        OrderJPanel panel = new OrderJPanel(workArea, enterprise);
-        workArea.add("OrderPanel", panel);
+       ReportViewerJPanel panel = new ReportViewerJPanel(workArea, (PlatformEnterprise) enterprise);
+    workArea.add("ReportViewerJPanel", panel);
 
-        CardLayout layout = (CardLayout) workArea.getLayout();
-        layout.show(workArea, "OrderPanel");
+    CardLayout layout = (CardLayout) workArea.getLayout();
+    layout.show(workArea, "ReportViewerJPanel");
 
     }//GEN-LAST:event_btnViewOrdersActionPerformed
 
     private void btnViewReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewReportsActionPerformed
-        ReportViewerJPanel panel = new ReportViewerJPanel(workArea, enterprise);
-        workArea.add("ReportViewerJPanel", panel);
+       ReportViewerJPanel panel = new ReportViewerJPanel(workArea, (PlatformEnterprise) enterprise);
+    workArea.add("ReportViewerJPanel", panel);
 
-        CardLayout layout = (CardLayout) workArea.getLayout();
-        layout.show(workArea, "ReportViewerJPanel");
+    CardLayout layout = (CardLayout) workArea.getLayout();
+    layout.show(workArea, "ReportViewerJPanel");
         
         
         

@@ -11,6 +11,7 @@ import business.product.Product;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
+import business.enterprise.PlatformEnterprise;
 
 /**
  *
@@ -18,12 +19,12 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ReportViewerJPanel extends javax.swing.JPanel {
  private JPanel workArea;
- private Enterprise enterprise;
+ private PlatformEnterprise enterprise;
 
     /**
      * Creates new form ReportViewerPanel
      */
-     public ReportViewerJPanel(JPanel workArea, Enterprise enterprise) {
+    public ReportViewerJPanel(JPanel workArea, PlatformEnterprise enterprise) {
         initComponents();
         this.workArea = workArea;
         this.enterprise = enterprise;
@@ -55,13 +56,13 @@ public class ReportViewerJPanel extends javax.swing.JPanel {
 
         tblOrderSummary.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Order ID", "Status", "Total Price", "Risk Alert"
+                "Order ID", "Status", "Total Price", "Shipment Status", "Risk Alert"
             }
         ));
         jScrollPane1.setViewportView(tblOrderSummary);
@@ -87,13 +88,13 @@ public class ReportViewerJPanel extends javax.swing.JPanel {
 
         tblShipmentSummary.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
             },
             new String [] {
-                "Shipment ID ", " Order ID", "Status", "ETA"
+                "Shipment Status", " Count"
             }
         ));
         jScrollPane2.setViewportView(tblShipmentSummary);
@@ -173,44 +174,22 @@ public class ReportViewerJPanel extends javax.swing.JPanel {
     DefaultTableModel model = (DefaultTableModel) tblOrderSummary.getModel();
     model.setRowCount(0);
 
-     for (Order order : getDemoOrders()) {
-        Object[] row = new Object[4];
+    if (enterprise == null || enterprise.getOrderDirectory() == null) {
+        return;
+    }
+
+    for (Order order : enterprise.getOrderDirectory().getOrderList()) {
+        Object[] row = new Object[5];
         row[0] = order.getOrderId();
         row[1] = order.getStatus();
         row[2] = order.getTotalPrice();
-        row[3] = getRiskAlert(order);
-        model.addRow(row);   
+        row[3] = order.getShipmentStatus();
+        row[4] = order.getRiskFlag();
+        model.addRow(row);
+        }
      }  
-    }
-    private String getRiskAlert(Order order) {
-    if (order.getTotalPrice() > 1000) {
-        return "High Value Alert";
-    }
-    return "";
-}
-    private ArrayList<Order> getDemoOrders() {
-    ArrayList<Order> list = new ArrayList<>();
-
-    Product p1 = new Product("iPhone", 1000);
-    Product p2 = new Product("Laptop", 2000);
-    Product p3 = new Product("Headphones", 300);
-
-    Order o1 = new Order();
-    o1.setOrderId("ORD001");
-    o1.setStatus("Processing");
-    o1.addItem(new OrderItem(p1, 1, 1000));
-    o1.addItem(new OrderItem(p3, 2, 250));
-
-    Order o2 = new Order();
-    o2.setOrderId("ORD002");
-    o2.setStatus("Completed");
-    o2.addItem(new OrderItem(p2, 1, 1800));
-
-    list.add(o1);
-    list.add(o2);
-
-    return list;
-}    
+    
+    
         
           
     
@@ -219,11 +198,31 @@ public class ReportViewerJPanel extends javax.swing.JPanel {
     DefaultTableModel model = (DefaultTableModel) tblShipmentSummary.getModel();
     model.setRowCount(0);
 
-    Object[] row1 = {"S001", "O001", "In Transit", "2026-04-10"};
-    Object[] row2 = {"S002", "O002", "Delivered", "2026-04-08"};
+    if (enterprise == null || enterprise.getOrderDirectory() == null) {
+        return;
+    }
 
-    model.addRow(row1);
-    model.addRow(row2);
+    int pending = 0;
+    int shipped = 0;
+    int delivered = 0;
+
+    for (Order order : enterprise.getOrderDirectory().getOrderList()) {
+        String s = order.getShipmentStatus();
+
+        if (s == null) continue;
+
+        if (s.equalsIgnoreCase("Pending")) {
+            pending++;
+        } else if (s.equalsIgnoreCase("Shipped")) {
+            shipped++;
+        } else if (s.equalsIgnoreCase("Delivered")) {
+            delivered++;
+        }
+    }
+
+    model.addRow(new Object[]{"Pending", pending});
+    model.addRow(new Object[]{"Shipped", shipped});
+    model.addRow(new Object[]{"Delivered", delivered});
         
         
         
