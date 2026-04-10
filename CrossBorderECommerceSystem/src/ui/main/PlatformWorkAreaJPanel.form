@@ -57,14 +57,14 @@
                           <Group type="102" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="btnViewReports" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="btnViewOrders" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="btnCustomerService" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="btnReturns" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnViewReports" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnReturns" alignment="0" min="-2" pref="124" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                               <Component id="jButton1" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -81,11 +81,11 @@
                       <Component id="btnCustomerService" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btnReturns" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
-                      <Component id="btnViewReports" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="btnViewReports" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
                       <Component id="jButton1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="74" max="32767" attributes="0"/>
+                      <EmptySpace pref="85" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>

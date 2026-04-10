@@ -108,12 +108,12 @@ public class PlatformWorkAreaJPanel extends javax.swing.JPanel {
                     .addGroup(menuPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnViewReports)
                             .addComponent(btnViewOrders)
                             .addComponent(btnCustomerService)
-                            .addComponent(btnReturns)))
+                            .addComponent(btnViewReports)
+                            .addComponent(btnReturns, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(menuPanelLayout.createSequentialGroup()
-                        .addGap(19, 19, 19)
+                        .addGap(17, 17, 17)
                         .addComponent(jButton1)))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
@@ -126,11 +126,11 @@ public class PlatformWorkAreaJPanel extends javax.swing.JPanel {
                 .addComponent(btnCustomerService)
                 .addGap(18, 18, 18)
                 .addComponent(btnReturns)
-                .addGap(59, 59, 59)
-                .addComponent(btnViewReports)
                 .addGap(18, 18, 18)
+                .addComponent(btnViewReports)
+                .addGap(48, 48, 48)
                 .addComponent(jButton1)
-                .addContainerGap(74, Short.MAX_VALUE))
+                .addContainerGap(85, Short.MAX_VALUE))
         );
 
         jSplitPane1.setLeftComponent(menuPanel);
