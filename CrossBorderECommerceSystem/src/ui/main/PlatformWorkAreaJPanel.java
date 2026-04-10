@@ -47,7 +47,7 @@ public class PlatformWorkAreaJPanel extends javax.swing.JPanel {
         btnViewReports = new javax.swing.JButton();
         btnCustomerService = new javax.swing.JButton();
         btnReturns = new javax.swing.JButton();
-        btnLogout = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         workArea = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
 
@@ -92,10 +92,10 @@ public class PlatformWorkAreaJPanel extends javax.swing.JPanel {
             }
         });
 
-        btnLogout.setText("Logout");
-        btnLogout.addActionListener(new java.awt.event.ActionListener() {
+        jButton1.setText("Logout");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLogoutActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -104,13 +104,17 @@ public class PlatformWorkAreaJPanel extends javax.swing.JPanel {
         menuPanelLayout.setHorizontalGroup(
             menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menuPanelLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnViewReports)
-                    .addComponent(btnViewOrders)
-                    .addComponent(btnCustomerService)
-                    .addComponent(btnReturns)
-                    .addComponent(btnLogout))
+                    .addGroup(menuPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnViewReports)
+                            .addComponent(btnViewOrders)
+                            .addComponent(btnCustomerService)
+                            .addComponent(btnReturns)))
+                    .addGroup(menuPanelLayout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(jButton1)))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         menuPanelLayout.setVerticalGroup(
@@ -124,9 +128,9 @@ public class PlatformWorkAreaJPanel extends javax.swing.JPanel {
                 .addComponent(btnReturns)
                 .addGap(59, 59, 59)
                 .addComponent(btnViewReports)
-                .addGap(30, 30, 30)
-                .addComponent(btnLogout)
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addContainerGap(74, Short.MAX_VALUE))
         );
 
         jSplitPane1.setLeftComponent(menuPanel);
@@ -187,13 +191,22 @@ public class PlatformWorkAreaJPanel extends javax.swing.JPanel {
         new LoginJFrame(network).setVisible(true);
     }//GEN-LAST:event_btnLogoutActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+Window window = SwingUtilities.getWindowAncestor(this);
+    if (window != null) {
+        window.dispose();
+    }
+    new LoginJFrame(network).setVisible(true);
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCustomerService;
-    private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnReturns;
     private javax.swing.JButton btnViewOrders;
     private javax.swing.JButton btnViewReports;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSplitPane jSplitPane1;
