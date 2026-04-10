@@ -3,13 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package ui.order;
-import business.enterprise.Enterprise;
 import business.enterprise.PlatformEnterprise;
 import business.order.Order;
-import business.order.OrderItem;
-import business.product.Product;
 import java.util.ArrayList;
 import javax.swing.JPanel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 /**
  *
@@ -17,22 +15,16 @@ import javax.swing.table.DefaultTableModel;
  */
 public class OrderJPanel extends javax.swing.JPanel {
     private javax.swing.JPanel workArea;
-    private Enterprise enterprise;
+    private PlatformEnterprise platformEnterprise;
     private ArrayList<Order> orderList;
 
     
 
-    public OrderJPanel(JPanel workArea, Enterprise enterprise) {
+    public OrderJPanel(JPanel workArea, PlatformEnterprise enterprise) {
         initComponents();
         this.workArea = workArea;
-        this.enterprise = enterprise;
-        
-        if (enterprise instanceof PlatformEnterprise) {
-            PlatformEnterprise platform = (PlatformEnterprise) enterprise;
-            orderList = platform.getOrderDirectory().getOrderList();
-        } else {
-            orderList = new ArrayList<>();
-        }
+        this.platformEnterprise = enterprise;
+        orderList = platformEnterprise.getOrderDirectory().getOrderList();
         populateTable();
     }
 
@@ -63,6 +55,10 @@ public class OrderJPanel extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         btnViewDetail = new javax.swing.JButton();
+        btnMarkShipped = new javax.swing.JButton();
+        btnMarkDelivered = new javax.swing.JButton();
+        btnCreateOrder = new javax.swing.JButton();
+        btnCancelOrder = new javax.swing.JButton();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -84,6 +80,34 @@ public class OrderJPanel extends javax.swing.JPanel {
             }
         });
 
+        btnMarkShipped.setText("Mark Shipped");
+        btnMarkShipped.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMarkShippedActionPerformed(evt);
+            }
+        });
+
+        btnMarkDelivered.setText("Mark Delivered");
+        btnMarkDelivered.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMarkDeliveredActionPerformed(evt);
+            }
+        });
+
+        btnCreateOrder.setText("Create Order");
+        btnCreateOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateOrderActionPerformed(evt);
+            }
+        });
+
+        btnCancelOrder.setText("Cancel Order");
+        btnCancelOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelOrderActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -95,6 +119,14 @@ public class OrderJPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(53, 53, 53)
                 .addComponent(btnViewDetail)
+                .addGap(18, 18, 18)
+                .addComponent(btnMarkShipped)
+                .addGap(18, 18, 18)
+                .addComponent(btnMarkDelivered)
+                .addGap(18, 18, 18)
+                .addComponent(btnCreateOrder)
+                .addGap(18, 18, 18)
+                .addComponent(btnCancelOrder)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -103,7 +135,12 @@ public class OrderJPanel extends javax.swing.JPanel {
                 .addGap(28, 28, 28)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(83, 83, 83)
-                .addComponent(btnViewDetail)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnViewDetail)
+                    .addComponent(btnMarkShipped)
+                    .addComponent(btnMarkDelivered)
+                    .addComponent(btnCreateOrder)
+                    .addComponent(btnCancelOrder))
                 .addContainerGap(68, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -128,11 +165,88 @@ public class OrderJPanel extends javax.swing.JPanel {
         
     }//GEN-LAST:event_btnViewDetailActionPerformed
 
+    private void btnMarkShippedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMarkShippedActionPerformed
+        Order order = getSelectedOrder();
+        if (order == null) {
+            return;
+        }
+        order.setShipmentStatus("Shipped");
+        order.setStatus("Shipped");
+        populateTable();
+    }//GEN-LAST:event_btnMarkShippedActionPerformed
+
+    private void btnMarkDeliveredActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMarkDeliveredActionPerformed
+        Order order = getSelectedOrder();
+        if (order == null) {
+            return;
+        }
+        if (!"Shipped".equalsIgnoreCase(order.getShipmentStatus())) {
+            JOptionPane.showMessageDialog(this, "Order must be shipped before delivered.");
+            return;
+        }
+        order.setShipmentStatus("Delivered");
+        order.setStatus("Completed");
+        populateTable();
+    }//GEN-LAST:event_btnMarkDeliveredActionPerformed
+
+    private void btnCreateOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateOrderActionPerformed
+        String customerName = JOptionPane.showInputDialog(this, "Customer name:");
+        if (customerName == null || customerName.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Customer name is required.");
+            return;
+        }
+
+        String email = JOptionPane.showInputDialog(this, "Customer email:");
+        if (email == null || email.trim().isEmpty() || !email.contains("@")) {
+            JOptionPane.showMessageDialog(this, "Please input a valid email.");
+            return;
+        }
+
+        String country = JOptionPane.showInputDialog(this, "Destination country:");
+        if (country == null || country.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Country is required.");
+            return;
+        }
+
+        platformEnterprise.getOrderDirectory().addOrder(
+                customerName.trim(),
+                email.trim(),
+                country.trim()
+        );
+        populateTable();
+    }//GEN-LAST:event_btnCreateOrderActionPerformed
+
+    private void btnCancelOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelOrderActionPerformed
+        Order order = getSelectedOrder();
+        if (order == null) {
+            return;
+        }
+        if ("Delivered".equalsIgnoreCase(order.getShipmentStatus())) {
+            JOptionPane.showMessageDialog(this, "Delivered order cannot be cancelled.");
+            return;
+        }
+        order.setStatus("Cancelled");
+        order.setShipmentStatus("Cancelled");
+        populateTable();
+    }//GEN-LAST:event_btnCancelOrderActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancelOrder;
+    private javax.swing.JButton btnCreateOrder;
+    private javax.swing.JButton btnMarkDelivered;
+    private javax.swing.JButton btnMarkShipped;
     private javax.swing.JButton btnViewDetail;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 
+    private Order getSelectedOrder() {
+        int selectedRow = jTable1.getSelectedRow();
+        if (selectedRow < 0) {
+            JOptionPane.showMessageDialog(this, "Please select an order first.");
+            return null;
+        }
+        return (Order) jTable1.getValueAt(selectedRow, 0);
+    }
 }

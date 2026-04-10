@@ -9,7 +9,9 @@ import business.enterprise.PlatformEnterprise;
 import business.enterprise.SupplierEnterprise;
 import business.network.Network;
 import java.awt.CardLayout;
+import java.awt.Window;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import ui.order.OrderJPanel;
 import ui.product.ManageProductJPanel;
 import ui.report.ReportViewerJPanel;
@@ -59,6 +61,7 @@ public AdminWorkAreaJPanel(Network network, Enterprise enterprise) {
         btnManageUsers = new javax.swing.JButton();
         btnSystemOverview = new javax.swing.JButton();
         btnManageShipments = new javax.swing.JButton();
+        btnLogout = new javax.swing.JButton();
         workArea = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
 
@@ -96,6 +99,13 @@ public AdminWorkAreaJPanel(Network network, Enterprise enterprise) {
 
         btnManageShipments.setText("Manage Shipments");
 
+        btnLogout.setText("Logout");
+        btnLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogoutActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -108,7 +118,8 @@ public AdminWorkAreaJPanel(Network network, Enterprise enterprise) {
                     .addComponent(btnManageUsers)
                     .addComponent(btnManageProducts)
                     .addComponent(btnViewOrders)
-                    .addComponent(btnViewReports))
+                    .addComponent(btnViewReports)
+                    .addComponent(btnLogout))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -126,7 +137,9 @@ public AdminWorkAreaJPanel(Network network, Enterprise enterprise) {
                 .addComponent(btnViewReports)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnSystemOverview)
-                .addContainerGap(189, Short.MAX_VALUE))
+                .addGap(24, 24, 24)
+                .addComponent(btnLogout)
+                .addContainerGap(142, Short.MAX_VALUE))
         );
 
         jSplitPane1.setLeftComponent(jPanel1);
@@ -225,8 +238,17 @@ public AdminWorkAreaJPanel(Network network, Enterprise enterprise) {
 
     }//GEN-LAST:event_btnManageUsersActionPerformed
 
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        Window window = SwingUtilities.getWindowAncestor(this);
+        if (window != null) {
+            window.dispose();
+        }
+        new LoginJFrame(network).setVisible(true);
+    }//GEN-LAST:event_btnLogoutActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnManageProducts;
     private javax.swing.JButton btnManageShipments;
     private javax.swing.JButton btnManageUsers;

@@ -44,13 +44,13 @@ public class Order {
     }
 
     public String getRiskFlag() {
-
          if (getTotalPrice() > 1000) {
         return "High Value";
     }
 
+    String shipment = shipmentStatus == null ? "" : shipmentStatus;
     long days = (new Date().getTime() - orderDate.getTime()) / (1000 * 60 * 60 * 24);
-    if (days > 3 && !shipmentStatus.equals("Shipped") && !shipmentStatus.equals("Delivered")) {
+    if (days > 3 && !shipment.equalsIgnoreCase("Shipped") && !shipment.equalsIgnoreCase("Delivered")) {
         return "Delay Risk";
     }
 

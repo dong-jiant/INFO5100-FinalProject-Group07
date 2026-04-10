@@ -1,11 +1,14 @@
 package ui.main;
 
 import business.enterprise.SupplierEnterprise;
+import business.network.Network;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Window;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import ui.product.ManageProductJPanel;
 import ui.report.SupplierReportJPanel;
 import ui.request.SupplierWorkRequestJPanel;
@@ -17,9 +20,11 @@ import ui.request.SupplierWorkRequestJPanel;
 
 public class SupplierWorkAreaJPanel extends JPanel {
     private final SupplierEnterprise supplierEnterprise;
+    private final Network network;
     private JPanel workArea;
 
-    public SupplierWorkAreaJPanel(SupplierEnterprise supplierEnterprise) {
+    public SupplierWorkAreaJPanel(Network network, SupplierEnterprise supplierEnterprise) {
+        this.network = network;
         this.supplierEnterprise = supplierEnterprise;
         initComponents();
     }
@@ -31,12 +36,15 @@ public class SupplierWorkAreaJPanel extends JPanel {
         JButton btnManageProducts = new JButton("Manage Supplier Products");
         JButton btnWorkRequests = new JButton("Process Work Requests");
         JButton btnSupplierReport = new JButton("Supplier KPI Report");
+        JButton btnLogout = new JButton("Logout");
         btnManageProducts.addActionListener(e -> openProductPanel());
         btnWorkRequests.addActionListener(e -> openWorkRequestPanel());
         btnSupplierReport.addActionListener(e -> openSupplierReportPanel());
+        btnLogout.addActionListener(e -> logout());
         menuPanel.add(btnManageProducts);
         menuPanel.add(btnWorkRequests);
         menuPanel.add(btnSupplierReport);
+        menuPanel.add(btnLogout);
 
         workArea = new JPanel(new CardLayout());
         workArea.add(new JLabel("Supplier Dashboard"), "HOME");
@@ -64,5 +72,13 @@ public class SupplierWorkAreaJPanel extends JPanel {
         workArea.add(panel, "SupplierReportJPanel");
         CardLayout layout = (CardLayout) workArea.getLayout();
         layout.show(workArea, "SupplierReportJPanel");
+    }
+
+    private void logout() {
+        Window window = SwingUtilities.getWindowAncestor(this);
+        if (window != null) {
+            window.dispose();
+        }
+        new LoginJFrame(network).setVisible(true);
     }
 }

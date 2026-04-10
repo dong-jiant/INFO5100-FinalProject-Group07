@@ -8,8 +8,12 @@ import business.enterprise.Enterprise;
 import business.enterprise.PlatformEnterprise;
 import business.network.Network;
 import java.awt.CardLayout;
+import java.awt.Window;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import ui.order.CustomerServiceJPanel;
 import ui.order.OrderJPanel;
+import ui.order.ReturnsJPanel;
 import ui.report.ReportViewerJPanel;
 /**
  *
@@ -43,6 +47,7 @@ public class PlatformWorkAreaJPanel extends javax.swing.JPanel {
         btnViewReports = new javax.swing.JButton();
         btnCustomerService = new javax.swing.JButton();
         btnReturns = new javax.swing.JButton();
+        btnLogout = new javax.swing.JButton();
         workArea = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
 
@@ -74,8 +79,25 @@ public class PlatformWorkAreaJPanel extends javax.swing.JPanel {
         });
 
         btnCustomerService.setText("Customer Service");
+        btnCustomerService.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCustomerServiceActionPerformed(evt);
+            }
+        });
 
         btnReturns.setText("Returns ");
+        btnReturns.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReturnsActionPerformed(evt);
+            }
+        });
+
+        btnLogout.setText("Logout");
+        btnLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogoutActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout menuPanelLayout = new javax.swing.GroupLayout(menuPanel);
         menuPanel.setLayout(menuPanelLayout);
@@ -87,7 +109,8 @@ public class PlatformWorkAreaJPanel extends javax.swing.JPanel {
                     .addComponent(btnViewReports)
                     .addComponent(btnViewOrders)
                     .addComponent(btnCustomerService)
-                    .addComponent(btnReturns))
+                    .addComponent(btnReturns)
+                    .addComponent(btnLogout))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         menuPanelLayout.setVerticalGroup(
@@ -101,7 +124,9 @@ public class PlatformWorkAreaJPanel extends javax.swing.JPanel {
                 .addComponent(btnReturns)
                 .addGap(59, 59, 59)
                 .addComponent(btnViewReports)
-                .addContainerGap(115, Short.MAX_VALUE))
+                .addGap(30, 30, 30)
+                .addComponent(btnLogout)
+                .addContainerGap(62, Short.MAX_VALUE))
         );
 
         jSplitPane1.setLeftComponent(menuPanel);
@@ -119,11 +144,11 @@ public class PlatformWorkAreaJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnViewOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewOrdersActionPerformed
-       ReportViewerJPanel panel = new ReportViewerJPanel(workArea, (PlatformEnterprise) enterprise);
-    workArea.add("ReportViewerJPanel", panel);
+       OrderJPanel panel = new OrderJPanel(workArea, (PlatformEnterprise) enterprise);
+    workArea.add("OrderJPanel", panel);
 
     CardLayout layout = (CardLayout) workArea.getLayout();
-    layout.show(workArea, "ReportViewerJPanel");
+    layout.show(workArea, "OrderJPanel");
 
     }//GEN-LAST:event_btnViewOrdersActionPerformed
 
@@ -140,9 +165,32 @@ public class PlatformWorkAreaJPanel extends javax.swing.JPanel {
         
     }//GEN-LAST:event_btnViewReportsActionPerformed
 
+    private void btnCustomerServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerServiceActionPerformed
+        CustomerServiceJPanel panel = new CustomerServiceJPanel(workArea, (PlatformEnterprise) enterprise);
+        workArea.add("CustomerServiceJPanel", panel);
+        CardLayout layout = (CardLayout) workArea.getLayout();
+        layout.show(workArea, "CustomerServiceJPanel");
+    }//GEN-LAST:event_btnCustomerServiceActionPerformed
+
+    private void btnReturnsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnsActionPerformed
+        ReturnsJPanel panel = new ReturnsJPanel(workArea, (PlatformEnterprise) enterprise);
+        workArea.add("ReturnsJPanel", panel);
+        CardLayout layout = (CardLayout) workArea.getLayout();
+        layout.show(workArea, "ReturnsJPanel");
+    }//GEN-LAST:event_btnReturnsActionPerformed
+
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        Window window = SwingUtilities.getWindowAncestor(this);
+        if (window != null) {
+            window.dispose();
+        }
+        new LoginJFrame(network).setVisible(true);
+    }//GEN-LAST:event_btnLogoutActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCustomerService;
+    private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnReturns;
     private javax.swing.JButton btnViewOrders;
     private javax.swing.JButton btnViewReports;
