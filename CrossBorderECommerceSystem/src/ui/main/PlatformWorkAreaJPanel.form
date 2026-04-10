@@ -111,11 +111,17 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Customer Service"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCustomerServiceActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnReturns">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Returns "/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnReturnsActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="jButton1">
               <Properties>

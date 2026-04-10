@@ -79,8 +79,18 @@ public class PlatformWorkAreaJPanel extends javax.swing.JPanel {
         });
 
         btnCustomerService.setText("Customer Service");
+        btnCustomerService.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCustomerServiceActionPerformed(evt);
+            }
+        });
 
         btnReturns.setText("Returns ");
+        btnReturns.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReturnsActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("Logout");
         jButton1.addActionListener(new java.awt.event.ActionListener() {

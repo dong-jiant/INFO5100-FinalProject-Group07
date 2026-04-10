@@ -63,6 +63,14 @@ public static void generatePlatformOrders(PlatformEnterprise platformEnterprise,
         );
 
         order.setStatus(statuses[random.nextInt(statuses.length)]);
+        
+if (order.getStatus().equals("Shipped")) {
+    order.setShipmentStatus("Shipped");
+} else if (order.getStatus().equals("Delivered")) {
+    order.setShipmentStatus("Delivered");
+} else {
+    order.setShipmentStatus("Pending");
+}        
 
         int itemCount = 1 + random.nextInt(3);
 
