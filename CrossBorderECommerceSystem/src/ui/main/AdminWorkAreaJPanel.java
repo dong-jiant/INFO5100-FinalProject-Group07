@@ -5,8 +5,11 @@
 package ui.main;
 
 import business.enterprise.Enterprise;
+import business.enterprise.SupplierEnterprise;
 import java.awt.CardLayout;
+import javax.swing.JOptionPane;
 import ui.order.OrderJPanel;
+import ui.product.ManageProductJPanel;
 import ui.report.ReportViewerJPanel;
 
 /**
@@ -132,7 +135,14 @@ private Enterprise enterprise;
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnManageProductsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageProductsActionPerformed
-        // TODO add your handling code here:
+        if (!(enterprise instanceof SupplierEnterprise)) {
+            JOptionPane.showMessageDialog(this, "Current enterprise does not support supplier product management.");
+            return;
+        }
+        ManageProductJPanel panel = new ManageProductJPanel(workArea, (SupplierEnterprise) enterprise);
+        workArea.add("ManageProductJPanel", panel);
+        CardLayout layout = (CardLayout) workArea.getLayout();
+        layout.show(workArea, "ManageProductJPanel");
     }//GEN-LAST:event_btnManageProductsActionPerformed
 
     private void btnViewOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewOrdersActionPerformed
