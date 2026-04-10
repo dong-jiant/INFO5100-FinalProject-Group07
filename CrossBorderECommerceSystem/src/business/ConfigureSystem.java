@@ -4,6 +4,8 @@ import business.enterprise.PlatformEnterprise;
 import business.enterprise.SupplierEnterprise;
 import business.network.Network;
 import business.user.Person;
+import business.workrequest.ProcurementRequest;
+import business.workrequest.RestockRequest;
 
 public class ConfigureSystem {
 
@@ -95,6 +97,33 @@ public class ConfigureSystem {
         // ===== Add to Network =====
         network.addEnterprise(supplier);
         network.addEnterprise(platform);
+
+        // ===== Cross-enterprise Work Requests to Supplier =====
+        supplier.getWorkRequestDirectory().addRequest(
+                new ProcurementRequest(
+                        platform.getName(),
+                        supplier.getName(),
+                        "Platform Procurement Organization",
+                        "Supplier Sales Organization",
+                        "Urgent procurement for seasonal campaign",
+                        "PRD-1001",
+                        "Smartphone X1",
+                        60
+                )
+        );
+
+        supplier.getWorkRequestDirectory().addRequest(
+                new RestockRequest(
+                        platform.getName(),
+                        supplier.getName(),
+                        "Platform Customer Service Organization",
+                        "Supplier Warehouse Organization",
+                        "Restock due to rising complaints about stock-outs",
+                        "PRD-1002",
+                        120,
+                        "Low stock risk"
+                )
+        );
 
         return network;
     }
