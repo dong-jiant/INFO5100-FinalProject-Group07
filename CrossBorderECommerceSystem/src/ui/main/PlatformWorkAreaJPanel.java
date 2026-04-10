@@ -11,7 +11,9 @@ import java.awt.CardLayout;
 import java.awt.Window;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import ui.order.CustomerServiceJPanel;
 import ui.order.OrderJPanel;
+import ui.order.ReturnsJPanel;
 import ui.report.ReportViewerJPanel;
 /**
  *
@@ -77,8 +79,18 @@ public class PlatformWorkAreaJPanel extends javax.swing.JPanel {
         });
 
         btnCustomerService.setText("Customer Service");
+        btnCustomerService.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCustomerServiceActionPerformed(evt);
+            }
+        });
 
         btnReturns.setText("Returns ");
+        btnReturns.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReturnsActionPerformed(evt);
+            }
+        });
 
         btnLogout.setText("Logout");
         btnLogout.addActionListener(new java.awt.event.ActionListener() {
@@ -132,7 +144,7 @@ public class PlatformWorkAreaJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnViewOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewOrdersActionPerformed
-       OrderJPanel panel = new OrderJPanel(workArea, enterprise);
+       OrderJPanel panel = new OrderJPanel(workArea, (PlatformEnterprise) enterprise);
     workArea.add("OrderJPanel", panel);
 
     CardLayout layout = (CardLayout) workArea.getLayout();
@@ -152,6 +164,20 @@ public class PlatformWorkAreaJPanel extends javax.swing.JPanel {
         
         
     }//GEN-LAST:event_btnViewReportsActionPerformed
+
+    private void btnCustomerServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerServiceActionPerformed
+        CustomerServiceJPanel panel = new CustomerServiceJPanel(workArea, (PlatformEnterprise) enterprise);
+        workArea.add("CustomerServiceJPanel", panel);
+        CardLayout layout = (CardLayout) workArea.getLayout();
+        layout.show(workArea, "CustomerServiceJPanel");
+    }//GEN-LAST:event_btnCustomerServiceActionPerformed
+
+    private void btnReturnsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnsActionPerformed
+        ReturnsJPanel panel = new ReturnsJPanel(workArea, (PlatformEnterprise) enterprise);
+        workArea.add("ReturnsJPanel", panel);
+        CardLayout layout = (CardLayout) workArea.getLayout();
+        layout.show(workArea, "ReturnsJPanel");
+    }//GEN-LAST:event_btnReturnsActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
         Window window = SwingUtilities.getWindowAncestor(this);

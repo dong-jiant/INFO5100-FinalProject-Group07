@@ -4,11 +4,9 @@
  */
 package ui.report;
 
-import business.enterprise.Enterprise;
 import business.order.Order;
-import business.order.OrderItem;
-import business.product.Product;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import business.enterprise.PlatformEnterprise;
@@ -31,6 +29,7 @@ public class ReportViewerJPanel extends javax.swing.JPanel {
 
         populateOrderSummaryTable();
         populateShipmentSummaryTable();
+        populateCountrySummaryTable();
     }
 
     /**
@@ -50,6 +49,9 @@ public class ReportViewerJPanel extends javax.swing.JPanel {
         panelShipmentSummary = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblShipmentSummary = new javax.swing.JTable();
+        panelCountrySummary = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblCountrySummary = new javax.swing.JTable();
         btnBack = new javax.swing.JButton();
 
         jLabel1.setText("Report Viewer Panel");
@@ -118,6 +120,38 @@ public class ReportViewerJPanel extends javax.swing.JPanel {
 
         jTabbedPane1.addTab("Shipment Summary", panelShipmentSummary);
 
+        tblCountrySummary.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Country", "Order Count", "Revenue", "High Risk Count"
+            }
+        ));
+        jScrollPane3.setViewportView(tblCountrySummary);
+
+        javax.swing.GroupLayout panelCountrySummaryLayout = new javax.swing.GroupLayout(panelCountrySummary);
+        panelCountrySummary.setLayout(panelCountrySummaryLayout);
+        panelCountrySummaryLayout.setHorizontalGroup(
+            panelCountrySummaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelCountrySummaryLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)
+                .addGap(26, 26, 26))
+        );
+        panelCountrySummaryLayout.setVerticalGroup(
+            panelCountrySummaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelCountrySummaryLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(76, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Country Summary", panelCountrySummary);
+
         btnBack.setText("<<Back");
         btnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -163,9 +197,12 @@ public class ReportViewerJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JPanel panelCountrySummary;
     private javax.swing.JPanel panelOrderSummary;
     private javax.swing.JPanel panelShipmentSummary;
+    private javax.swing.JTable tblCountrySummary;
     private javax.swing.JTable tblOrderSummary;
     private javax.swing.JTable tblShipmentSummary;
     // End of variables declaration//GEN-END:variables
@@ -181,9 +218,9 @@ public class ReportViewerJPanel extends javax.swing.JPanel {
     for (Order order : enterprise.getOrderDirectory().getOrderList()) {
         Object[] row = new Object[5];
         row[0] = order.getOrderId();
-        row[1] = order.getStatus();
+        row[1] = safeValue(order.getStatus());
         row[2] = order.getTotalPrice();
-        row[3] = order.getShipmentStatus();
+        row[3] = safeValue(order.getShipmentStatus());
         row[4] = order.getRiskFlag();
         model.addRow(row);
         }
@@ -205,11 +242,21 @@ public class ReportViewerJPanel extends javax.swing.JPanel {
     int pending = 0;
     int shipped = 0;
     int delivered = 0;
+    int others = 0;
+    double totalRevenue = 0.0;
+    int highRiskCount = 0;
 
     for (Order order : enterprise.getOrderDirectory().getOrderList()) {
+        totalRevenue += order.getTotalPrice();
+        if ("High Value".equalsIgnoreCase(order.getRiskFlag()) || "Delay Risk".equalsIgnoreCase(order.getRiskFlag())) {
+            highRiskCount++;
+        }
         String s = order.getShipmentStatus();
 
-        if (s == null) continue;
+        if (s == null || s.trim().isEmpty()) {
+            others++;
+            continue;
+        }
 
         if (s.equalsIgnoreCase("Pending")) {
             pending++;
@@ -217,14 +264,54 @@ public class ReportViewerJPanel extends javax.swing.JPanel {
             shipped++;
         } else if (s.equalsIgnoreCase("Delivered")) {
             delivered++;
+        } else {
+            others++;
         }
     }
 
     model.addRow(new Object[]{"Pending", pending});
     model.addRow(new Object[]{"Shipped", shipped});
     model.addRow(new Object[]{"Delivered", delivered});
+    model.addRow(new Object[]{"Others", others});
+    model.addRow(new Object[]{"High Risk Orders", highRiskCount});
+    model.addRow(new Object[]{"Total Revenue", String.format("$%.2f", totalRevenue)});
         
         
         
+    }
+
+    private String safeValue(String value) {
+        return value == null || value.trim().isEmpty() ? "N/A" : value;
+    }
+
+    private void populateCountrySummaryTable() {
+        DefaultTableModel model = (DefaultTableModel) tblCountrySummary.getModel();
+        model.setRowCount(0);
+
+        if (enterprise == null || enterprise.getOrderDirectory() == null) {
+            return;
+        }
+
+        Map<String, Integer> countryCount = new HashMap<>();
+        Map<String, Double> countryRevenue = new HashMap<>();
+        Map<String, Integer> countryHighRisk = new HashMap<>();
+
+        for (Order order : enterprise.getOrderDirectory().getOrderList()) {
+            String country = safeValue(order.getCountry());
+            countryCount.put(country, countryCount.getOrDefault(country, 0) + 1);
+            countryRevenue.put(country, countryRevenue.getOrDefault(country, 0.0) + order.getTotalPrice());
+            if ("High Value".equalsIgnoreCase(order.getRiskFlag()) || "Delay Risk".equalsIgnoreCase(order.getRiskFlag())) {
+                countryHighRisk.put(country, countryHighRisk.getOrDefault(country, 0) + 1);
+            }
+        }
+
+        for (String country : countryCount.keySet()) {
+            model.addRow(new Object[]{
+                country,
+                countryCount.get(country),
+                String.format("$%.2f", countryRevenue.get(country)),
+                countryHighRisk.getOrDefault(country, 0)
+            });
+        }
     }
 }

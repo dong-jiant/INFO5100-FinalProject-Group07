@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package ui.order;
-import business.enterprise.Enterprise;
 import business.enterprise.PlatformEnterprise;
 import business.order.Order;
 import java.util.ArrayList;
@@ -16,22 +15,16 @@ import javax.swing.table.DefaultTableModel;
  */
 public class OrderJPanel extends javax.swing.JPanel {
     private javax.swing.JPanel workArea;
-    private Enterprise enterprise;
+    private PlatformEnterprise platformEnterprise;
     private ArrayList<Order> orderList;
 
     
 
-    public OrderJPanel(JPanel workArea, Enterprise enterprise) {
+    public OrderJPanel(JPanel workArea, PlatformEnterprise enterprise) {
         initComponents();
         this.workArea = workArea;
-        this.enterprise = enterprise;
-        
-        if (enterprise instanceof PlatformEnterprise) {
-            PlatformEnterprise platform = (PlatformEnterprise) enterprise;
-            orderList = platform.getOrderDirectory().getOrderList();
-        } else {
-            orderList = new ArrayList<>();
-        }
+        this.platformEnterprise = enterprise;
+        orderList = platformEnterprise.getOrderDirectory().getOrderList();
         populateTable();
     }
 
@@ -64,6 +57,8 @@ public class OrderJPanel extends javax.swing.JPanel {
         btnViewDetail = new javax.swing.JButton();
         btnMarkShipped = new javax.swing.JButton();
         btnMarkDelivered = new javax.swing.JButton();
+        btnCreateOrder = new javax.swing.JButton();
+        btnCancelOrder = new javax.swing.JButton();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -99,6 +94,20 @@ public class OrderJPanel extends javax.swing.JPanel {
             }
         });
 
+        btnCreateOrder.setText("Create Order");
+        btnCreateOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateOrderActionPerformed(evt);
+            }
+        });
+
+        btnCancelOrder.setText("Cancel Order");
+        btnCancelOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelOrderActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -114,6 +123,10 @@ public class OrderJPanel extends javax.swing.JPanel {
                 .addComponent(btnMarkShipped)
                 .addGap(18, 18, 18)
                 .addComponent(btnMarkDelivered)
+                .addGap(18, 18, 18)
+                .addComponent(btnCreateOrder)
+                .addGap(18, 18, 18)
+                .addComponent(btnCancelOrder)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -125,7 +138,9 @@ public class OrderJPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnViewDetail)
                     .addComponent(btnMarkShipped)
-                    .addComponent(btnMarkDelivered))
+                    .addComponent(btnMarkDelivered)
+                    .addComponent(btnCreateOrder)
+                    .addComponent(btnCancelOrder))
                 .addContainerGap(68, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -174,8 +189,51 @@ public class OrderJPanel extends javax.swing.JPanel {
         populateTable();
     }//GEN-LAST:event_btnMarkDeliveredActionPerformed
 
+    private void btnCreateOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateOrderActionPerformed
+        String customerName = JOptionPane.showInputDialog(this, "Customer name:");
+        if (customerName == null || customerName.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Customer name is required.");
+            return;
+        }
+
+        String email = JOptionPane.showInputDialog(this, "Customer email:");
+        if (email == null || email.trim().isEmpty() || !email.contains("@")) {
+            JOptionPane.showMessageDialog(this, "Please input a valid email.");
+            return;
+        }
+
+        String country = JOptionPane.showInputDialog(this, "Destination country:");
+        if (country == null || country.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Country is required.");
+            return;
+        }
+
+        platformEnterprise.getOrderDirectory().addOrder(
+                customerName.trim(),
+                email.trim(),
+                country.trim()
+        );
+        populateTable();
+    }//GEN-LAST:event_btnCreateOrderActionPerformed
+
+    private void btnCancelOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelOrderActionPerformed
+        Order order = getSelectedOrder();
+        if (order == null) {
+            return;
+        }
+        if ("Delivered".equalsIgnoreCase(order.getShipmentStatus())) {
+            JOptionPane.showMessageDialog(this, "Delivered order cannot be cancelled.");
+            return;
+        }
+        order.setStatus("Cancelled");
+        order.setShipmentStatus("Cancelled");
+        populateTable();
+    }//GEN-LAST:event_btnCancelOrderActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancelOrder;
+    private javax.swing.JButton btnCreateOrder;
     private javax.swing.JButton btnMarkDelivered;
     private javax.swing.JButton btnMarkShipped;
     private javax.swing.JButton btnViewDetail;
