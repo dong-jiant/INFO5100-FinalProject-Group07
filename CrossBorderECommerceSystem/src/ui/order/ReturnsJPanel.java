@@ -52,14 +52,16 @@ public class ReturnsJPanel extends JPanel {
     }
 
     private void populateTable() {
-        model.setRowCount(0);
-        for (Order order : platformEnterprise.getOrderDirectory().getOrderList()) {
-            if ("Delivered".equalsIgnoreCase(order.getShipmentStatus()) || "Return Requested".equalsIgnoreCase(order.getStatus())) {
-                model.addRow(new Object[]{
-                    order.getOrderId(),
-                    order.getCustomerName(),
-                    order.getStatus(),
-                    order.getShipmentStatus()
+         model.setRowCount(0);
+    for (Order order : platformEnterprise.getOrderDirectory().getOrderList()) {
+        if ("Delivered".equalsIgnoreCase(order.getStatus())
+                || "Delivered".equalsIgnoreCase(order.getShipmentStatus())
+                || "Return Requested".equalsIgnoreCase(order.getStatus())) {
+            model.addRow(new Object[]{
+                order.getOrderId(),
+                order.getCustomerName(),
+                order.getStatus(),
+                order.getShipmentStatus()
                 });
             }
         }

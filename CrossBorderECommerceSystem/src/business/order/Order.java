@@ -18,6 +18,7 @@ public class Order {
     private Date orderDate;
     private ArrayList<OrderItem> items;
 
+
     public Order() {
         this.items = new ArrayList<>();
         this.orderDate = new Date();
@@ -114,6 +115,7 @@ public void setShipmentStatus(String shipmentStatus) {
     public void setOrderDate(Date orderDate) {
         this.orderDate = orderDate;
     }
+    
 
     // JTable 显示用
     @Override
