@@ -5,6 +5,7 @@
 package ui.main;
 
 import business.enterprise.Enterprise;
+import business.user.UserAccount;
 import java.awt.CardLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -14,12 +15,10 @@ import javax.swing.JPanel;
  * @author stelladong
  */
 public class AdminUserAccountJPanel extends javax.swing.JPanel {
-private JPanel workArea;
-private Enterprise enterprise;
-private String userId;
-private String username;
-private String role;
-private ManageUsersJPanel manageUsersPanel;
+    private JPanel workArea;
+    private Enterprise enterprise;
+    private UserAccount userAccount;
+    private ManageUsersJPanel manageUsersPanel;
     /**
      * Creates new form CreateUserJPanel
      */
@@ -28,23 +27,22 @@ private ManageUsersJPanel manageUsersPanel;
     /**
      * Creates new form CreateUserJPanel
      */
-    public AdminUserAccountJPanel(JPanel workArea, Enterprise enterprise, String userId, String username, String role, ManageUsersJPanel manageUsersPanel) {
-    initComponents();
-    this.workArea = workArea;
-    this.enterprise = enterprise;
-    this.userId = userId;
-    this.username = username;
-    this.role = role;
-    this.manageUsersPanel = manageUsersPanel;
+ public AdminUserAccountJPanel(JPanel workArea, Enterprise enterprise, UserAccount userAccount, ManageUsersJPanel manageUsersPanel) {
+        initComponents();
+        this.workArea = workArea;
+        this.enterprise = enterprise;
+        this.userAccount = userAccount;
+        this.manageUsersPanel = manageUsersPanel;
 
-    txtUserID.setText(userId);
-    txtUsername.setText(username);
-    txtRole.setText(role);
+        txtUserID.setText(userAccount.getUsername());
+        txtUsername.setText(userAccount.getUsername());
+        txtRole.setText(userAccount.getRole());
 
-    txtUserID.setEditable(false);
-    txtEmail.setText("");
-    txtNewPassword.setText("");
-}
+        txtUserID.setEditable(false);
+        txtEmail.setText("");
+        txtNewPassword.setText("");
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -200,29 +198,33 @@ private ManageUsersJPanel manageUsersPanel;
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
 String newUsername = txtUsername.getText().trim();
-    String newRole = txtRole.getText().trim();
-    String email = txtEmail.getText().trim();
-    String newPassword = txtNewPassword.getText().trim();
+        String newRole = txtRole.getText().trim();
+        String newPassword = txtNewPassword.getText().trim();
 
-    if (newUsername.isEmpty()) {
-    JOptionPane.showMessageDialog(this, "Username cannot be empty.", "Warning", JOptionPane.WARNING_MESSAGE);        return;
-    }
+        if (newUsername.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Username cannot be empty.", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-    if (newRole.isEmpty()) {
-    JOptionPane.showMessageDialog(this, "Role cannot be empty.", "Warning", JOptionPane.WARNING_MESSAGE);        return;
-    }
+        if (newRole.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Role cannot be empty.", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-   JOptionPane.showMessageDialog(this, "User account updated successfully.");
+        userAccount.setUsername(newUsername);
+        userAccount.setRole(newRole);
+
+        if (!newPassword.isEmpty()) {
+            userAccount.setPassword(newPassword);
+        }
+
+        JOptionPane.showMessageDialog(this, "User account updated successfully.");
+
+        manageUsersPanel.populateTable();
 
         workArea.remove(this);
         CardLayout layout = (CardLayout) workArea.getLayout();
         layout.previous(workArea);
-
-
-
-
-
-
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
@@ -233,22 +235,26 @@ String newUsername = txtUsername.getText().trim();
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
- int confirm = javax.swing.JOptionPane.showConfirmDialog(
-            this,
-            "Are you sure you want to delete this user account?",
-            "Confirm Delete",
-            javax.swing.JOptionPane.YES_NO_OPTION
-    );
+  int confirm = JOptionPane.showConfirmDialog(
+                this,
+                "Are you sure you want to delete this user account?",
+                "Confirm Delete",
+                JOptionPane.YES_NO_OPTION
+        );
 
-    if (confirm != javax.swing.JOptionPane.YES_OPTION) {
-        return;
-    }
+        if (confirm != JOptionPane.YES_OPTION) {
+            return;
+        }
 
-    javax.swing.JOptionPane.showMessageDialog(this, "User account deleted successfully.");
+        enterprise.getUserAccountDirectory().deleteUserAccount(userAccount);
 
-    workArea.remove(this);
-     CardLayout layout = (CardLayout) workArea.getLayout();
-    layout.previous(workArea);
+        JOptionPane.showMessageDialog(this, "User account deleted successfully.");
+
+        manageUsersPanel.populateTable();
+
+        workArea.remove(this);
+        CardLayout layout = (CardLayout) workArea.getLayout();
+        layout.previous(workArea);
 
 
 

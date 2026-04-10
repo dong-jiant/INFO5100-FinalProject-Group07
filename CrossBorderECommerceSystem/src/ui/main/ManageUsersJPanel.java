@@ -184,12 +184,11 @@ public class ManageUsersJPanel extends javax.swing.JPanel {
     UserAccount userAccount = (UserAccount) model.getValueAt(selectedRow, 0);
 
     AdminUserAccountJPanel panel = new AdminUserAccountJPanel(
-            workArea,
-            enterprise,
-            userAccount.getUsername(),
-            userAccount.getUsername(),
-            userAccount.getRole(),
-            this
+        workArea,
+        enterprise,
+        userAccount,
+        this
+
     );
 
     workArea.add("AdminUserAccountJPanel", panel);
@@ -252,7 +251,7 @@ public class ManageUsersJPanel extends javax.swing.JPanel {
     private javax.swing.JTable tblUsers;
     // End of variables declaration//GEN-END:variables
 
-    private void populateTable() {
+    void populateTable() {
    DefaultTableModel model = (DefaultTableModel) tblUsers.getModel();
     model.setRowCount(0);
 
