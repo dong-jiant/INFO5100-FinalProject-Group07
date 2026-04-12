@@ -4,8 +4,9 @@
  */
 package ui.main;
 
-import business.enterprise.Enterprise;
 import java.awt.CardLayout;
+
+import business.enterprise.Enterprise;
 import ui.order.OrderJPanel;
 import ui.report.ReportViewerJPanel;
 
@@ -14,17 +15,14 @@ import ui.report.ReportViewerJPanel;
  * @author stelladong
  */
 public class AdminWorkAreaJPanel extends javax.swing.JPanel {
-private Enterprise enterprise;
-    /**
-     * Creates new form AdminWorkAreaJPanel
-     */
+    private Enterprise enterprise;
 
     /**
      * Creates new form AdminWorkAreaJPanel
      */
     public AdminWorkAreaJPanel(Enterprise enterprise1) {
         initComponents();
-        this.enterprise = enterprise;
+        this.enterprise = enterprise1;
     }
 
     /**
@@ -75,6 +73,11 @@ private Enterprise enterprise;
         btnSystemOverview.setText("System Overview");
 
         btnManageShipments.setText("Manage Shipments");
+        btnManageShipments.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnManageShipmentsActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -128,29 +131,24 @@ private Enterprise enterprise;
     }//GEN-LAST:event_btnManageProductsActionPerformed
 
     private void btnViewOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewOrdersActionPerformed
-    OrderJPanel panel = new OrderJPanel(workArea, enterprise);
-    workArea.add("OrderJPanel", panel);
+        OrderJPanel panel = new OrderJPanel(workArea, enterprise);
+        workArea.add("OrderJPanel", panel);
 
-    CardLayout layout = (CardLayout) workArea.getLayout();
-    layout.show(workArea, "OrderJPanel");
-        
-        
-        
-        
+        CardLayout layout = (CardLayout) workArea.getLayout();
+        layout.show(workArea, "OrderJPanel");
     }//GEN-LAST:event_btnViewOrdersActionPerformed
 
     private void btnViewReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewReportsActionPerformed
-    ReportViewerJPanel panel = new ReportViewerJPanel(workArea, enterprise);
-    workArea.add("ReportViewerJPanel", panel);
+        ReportViewerJPanel panel = new ReportViewerJPanel(workArea, enterprise);
+        workArea.add("ReportViewerJPanel", panel);
 
-    CardLayout layout = (CardLayout) workArea.getLayout();
-    layout.show(workArea, "ReportViewerJPanel");
-
-
-
-
+        CardLayout layout = (CardLayout) workArea.getLayout();
+        layout.show(workArea, "ReportViewerJPanel");
     }//GEN-LAST:event_btnViewReportsActionPerformed
 
+    private void btnManageShipmentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageShipmentsActionPerformed
+        // TODO: logistics entry will be integrated after merge cleanup
+    }//GEN-LAST:event_btnManageShipmentsActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnManageProducts;
