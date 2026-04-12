@@ -6,11 +6,13 @@ package ui.main;
 
 import business.ConfigureSystem;
 import business.enterprise.Enterprise;
+import business.enterprise.LogisticsEnterprise;
 import business.enterprise.SupplierEnterprise;
 import business.network.Network;
 import business.user.UserAccount;
 import java.util.List;
 import javax.swing.JOptionPane;
+import ui.logistics.DeliveryJPanel;
 
 /**
  *
@@ -169,7 +171,15 @@ if (network == null) {
             } else {
                 JOptionPane.showMessageDialog(this, "Current enterprise is not a supplier enterprise.");
             }
-              } else if (foundUser.getRole().equals("CUSTOMER_SERVICE")) {
+          
+        } else if (foundUser.getRole().equals("DELIVERY_STAFF")) {
+            if (matchedEnterprise instanceof LogisticsEnterprise) {
+                this.setContentPane(new DeliveryJPanel((LogisticsEnterprise) matchedEnterprise, foundUser.getUsername()));
+                this.revalidate();
+            } else {
+                JOptionPane.showMessageDialog(this, "Current enterprise is not a logistics enterprise.");
+            }
+        } else if (foundUser.getRole().equals("CUSTOMER_SERVICE")) {
             this.setContentPane(new PlatformWorkAreaJPanel(network, matchedEnterprise));
             this.revalidate();
                            
