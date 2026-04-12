@@ -4,14 +4,18 @@
  */
 package ui.main;
 
+import java.awt.CardLayout;
+import java.awt.Window;
+
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
 import business.enterprise.Enterprise;
 import business.enterprise.PlatformEnterprise;
 import business.enterprise.SupplierEnterprise;
 import business.network.Network;
-import java.awt.CardLayout;
-import java.awt.Window;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
+import ui.logistics.DeliveryJPanel;
+import ui.logistics.ManageShipmentsJPanel;
 import ui.order.OrderJPanel;
 import ui.product.ManageProductJPanel;
 import ui.report.ReportViewerJPanel;
@@ -113,6 +117,11 @@ public AdminWorkAreaJPanel(Network network, Enterprise enterprise) {
         });
 
         btnManageShipments.setText("Manage Shipments");
+        btnManageShipments.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            	btnManageShipmentsActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("Logout");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -276,6 +285,15 @@ PlatformEnterprise platformEnterprise = null;
     workArea.add("SystemOverviewJPanel", panel);
     CardLayout layout = (CardLayout) workArea.getLayout();
     layout.show(workArea, "SystemOverviewJPanel");    }//GEN-LAST:event_btnSystemOverviewActionPerformed
+    
+    private void btnManageShipmentsActionPerformed(java.awt.event.ActionEvent evt) {
+    	ManageShipmentsJPanel panel = new ManageShipmentsJPanel(workArea, network);  
+    	workArea.add("ManageShipmentsJPanel", panel);
+        CardLayout layout = (CardLayout) workArea.getLayout();
+        layout.next(workArea); 
+        }
+    
+    
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
  Window window = SwingUtilities.getWindowAncestor(this);
