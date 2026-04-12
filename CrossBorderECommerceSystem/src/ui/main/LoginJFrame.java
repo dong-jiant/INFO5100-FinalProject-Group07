@@ -171,6 +171,7 @@ if (network == null) {
             } else {
                 JOptionPane.showMessageDialog(this, "Current enterprise is not a supplier enterprise.");
             }
+          
         } else if (foundUser.getRole().equals("DELIVERY_STAFF")) {
             if (matchedEnterprise instanceof LogisticsEnterprise) {
                 this.setContentPane(new DeliveryJPanel((LogisticsEnterprise) matchedEnterprise, foundUser.getUsername()));
