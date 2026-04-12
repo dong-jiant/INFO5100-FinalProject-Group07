@@ -4,9 +4,12 @@
  */
 package ui.report;
 
-import business.enterprise.Enterprise;
+import business.order.Order;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
+import business.enterprise.PlatformEnterprise;
 
 /**
  *
@@ -14,18 +17,19 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ReportViewerJPanel extends javax.swing.JPanel {
  private JPanel workArea;
- private Enterprise enterprise;
+ private PlatformEnterprise enterprise;
 
     /**
      * Creates new form ReportViewerPanel
      */
-     public ReportViewerJPanel(JPanel workArea, Enterprise enterprise) {
+    public ReportViewerJPanel(JPanel workArea, PlatformEnterprise enterprise) {
         initComponents();
         this.workArea = workArea;
         this.enterprise = enterprise;
 
         populateOrderSummaryTable();
         populateShipmentSummaryTable();
+        populateCountrySummaryTable();
     }
 
     /**
@@ -45,18 +49,22 @@ public class ReportViewerJPanel extends javax.swing.JPanel {
         panelShipmentSummary = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblShipmentSummary = new javax.swing.JTable();
+        panelCountrySummary = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblCountrySummary = new javax.swing.JTable();
+        btnBack = new javax.swing.JButton();
 
         jLabel1.setText("Report Viewer Panel");
 
         tblOrderSummary.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Order ID", "Status", "Total Price"
+                "Order ID", "Status", "Total Price", "Shipment Status", "Risk Alert"
             }
         ));
         jScrollPane1.setViewportView(tblOrderSummary);
@@ -75,20 +83,20 @@ public class ReportViewerJPanel extends javax.swing.JPanel {
             .addGroup(panelOrderSummaryLayout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Order Summary", panelOrderSummary);
 
         tblShipmentSummary.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
             },
             new String [] {
-                "Shipment ID ", " Order ID", "Status", "ETA"
+                "Shipment Status", " Count"
             }
         ));
         jScrollPane2.setViewportView(tblShipmentSummary);
@@ -107,10 +115,49 @@ public class ReportViewerJPanel extends javax.swing.JPanel {
             .addGroup(panelShipmentSummaryLayout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Shipment Summary", panelShipmentSummary);
+
+        tblCountrySummary.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Country", "Order Count", "Revenue", "High Risk Count"
+            }
+        ));
+        jScrollPane3.setViewportView(tblCountrySummary);
+
+        javax.swing.GroupLayout panelCountrySummaryLayout = new javax.swing.GroupLayout(panelCountrySummary);
+        panelCountrySummary.setLayout(panelCountrySummaryLayout);
+        panelCountrySummaryLayout.setHorizontalGroup(
+            panelCountrySummaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelCountrySummaryLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)
+                .addGap(26, 26, 26))
+        );
+        panelCountrySummaryLayout.setVerticalGroup(
+            panelCountrySummaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelCountrySummaryLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(76, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Country Summary", panelCountrySummary);
+
+        btnBack.setText("<<Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -120,26 +167,42 @@ public class ReportViewerJPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(183, 183, 183)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnBack)
+                .addGap(84, 84, 84))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel1)
+                .addGap(17, 17, 17)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(btnBack))
                 .addGap(18, 18, 18)
                 .addComponent(jTabbedPane1))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+
+    workArea.remove(this);
+    java.awt.CardLayout layout = (java.awt.CardLayout) workArea.getLayout();
+    layout.previous(workArea);
+
+    }//GEN-LAST:event_btnBackActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBack;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JPanel panelCountrySummary;
     private javax.swing.JPanel panelOrderSummary;
     private javax.swing.JPanel panelShipmentSummary;
+    private javax.swing.JTable tblCountrySummary;
     private javax.swing.JTable tblOrderSummary;
     private javax.swing.JTable tblShipmentSummary;
     // End of variables declaration//GEN-END:variables
@@ -148,30 +211,107 @@ public class ReportViewerJPanel extends javax.swing.JPanel {
     DefaultTableModel model = (DefaultTableModel) tblOrderSummary.getModel();
     model.setRowCount(0);
 
-    Object[] row1 = {"O001", "Processing", 120.00};
-    Object[] row2 = {"O002", "Completed", 88.50};
-
-    model.addRow(row1);
-    model.addRow(row2);    
-        
-        
-        
-        
-        
-        
+    if (enterprise == null || enterprise.getOrderDirectory() == null) {
+        return;
     }
+
+    for (Order order : enterprise.getOrderDirectory().getOrderList()) {
+        Object[] row = new Object[5];
+        row[0] = order.getOrderId();
+        row[1] = safeValue(order.getStatus());
+        row[2] = order.getTotalPrice();
+        row[3] = safeValue(order.getShipmentStatus());
+        row[4] = order.getRiskFlag();
+        model.addRow(row);
+        }
+     }  
+    
+    
+        
+          
+    
 
     private void populateShipmentSummaryTable() {
     DefaultTableModel model = (DefaultTableModel) tblShipmentSummary.getModel();
     model.setRowCount(0);
 
-    Object[] row1 = {"S001", "O001", "In Transit", "2026-04-10"};
-    Object[] row2 = {"S002", "O002", "Delivered", "2026-04-08"};
+    if (enterprise == null || enterprise.getOrderDirectory() == null) {
+        return;
+    }
 
-    model.addRow(row1);
-    model.addRow(row2);
+    int pending = 0;
+    int shipped = 0;
+    int delivered = 0;
+    int others = 0;
+    double totalRevenue = 0.0;
+    int highRiskCount = 0;
+
+    for (Order order : enterprise.getOrderDirectory().getOrderList()) {
+        totalRevenue += order.getTotalPrice();
+        if ("High Value".equalsIgnoreCase(order.getRiskFlag()) || "Delay Risk".equalsIgnoreCase(order.getRiskFlag())) {
+            highRiskCount++;
+        }
+        String s = order.getShipmentStatus();
+
+        if (s == null || s.trim().isEmpty()) {
+            others++;
+            continue;
+        }
+
+        if (s.equalsIgnoreCase("Pending")) {
+            pending++;
+        } else if (s.equalsIgnoreCase("Shipped")) {
+            shipped++;
+        } else if (s.equalsIgnoreCase("Delivered")) {
+            delivered++;
+        } else {
+            others++;
+        }
+    }
+
+    model.addRow(new Object[]{"Pending", pending});
+    model.addRow(new Object[]{"Shipped", shipped});
+    model.addRow(new Object[]{"Delivered", delivered});
+    model.addRow(new Object[]{"Others", others});
+    model.addRow(new Object[]{"High Risk Orders", highRiskCount});
+    model.addRow(new Object[]{"Total Revenue", String.format("$%.2f", totalRevenue)});
         
         
         
+    }
+
+    private String safeValue(String value) {
+        return value == null || value.trim().isEmpty() ? "N/A" : value;
+    }
+
+    private void populateCountrySummaryTable() {
+        DefaultTableModel model = (DefaultTableModel) tblCountrySummary.getModel();
+        model.setRowCount(0);
+
+        if (enterprise == null || enterprise.getOrderDirectory() == null) {
+            return;
+        }
+
+        Map<String, Integer> countryCount = new HashMap<>();
+        Map<String, Double> countryRevenue = new HashMap<>();
+        Map<String, Integer> countryHighRisk = new HashMap<>();
+
+        for (Order order : enterprise.getOrderDirectory().getOrderList()) {
+            String country = safeValue(order.getCountry());
+            countryCount.put(country, countryCount.getOrDefault(country, 0) + 1);
+            countryRevenue.put(country, countryRevenue.getOrDefault(country, 0.0) + order.getTotalPrice());
+            if ("High Value".equalsIgnoreCase(order.getRiskFlag()) || "Delay Risk".equalsIgnoreCase(order.getRiskFlag())) {
+                countryHighRisk.put(country, countryHighRisk.getOrDefault(country, 0) + 1);
+            }
+        }
+
+        for (String country : countryCount.keySet()) {
+            model.addRow(new Object[]{
+                country,
+                countryCount.get(country),
+                String.format("$%.2f", countryRevenue.get(country)),
+                countryHighRisk.getOrDefault(country, 0)
+            });
+        }
     }
 }

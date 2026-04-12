@@ -5,24 +5,57 @@
 package ui.main;
 
 import java.awt.CardLayout;
+import java.awt.Window;
+
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import business.enterprise.Enterprise;
+import business.enterprise.PlatformEnterprise;
+import business.enterprise.SupplierEnterprise;
+import business.network.Network;
+import ui.logistics.DeliveryJPanel;
+import ui.logistics.ManageShipmentsJPanel;
 import ui.order.OrderJPanel;
+import ui.product.ManageProductJPanel;
 import ui.report.ReportViewerJPanel;
+
 
 /**
  *
  * @author stelladong
  */
 public class AdminWorkAreaJPanel extends javax.swing.JPanel {
-    private Enterprise enterprise;
+private Enterprise enterprise;
+private Network network;
+    /**
+     * Creates new form AdminWorkAreaJPanel
+     */
 
     /**
      * Creates new form AdminWorkAreaJPanel
      */
-    public AdminWorkAreaJPanel(Enterprise enterprise1) {
-        initComponents();
-        this.enterprise = enterprise1;
+  
+    /**
+     * Creates new form AdminWorkAreaJPanel
+     */
+    /**
+     * Creates new form AdminWorkAreaJPanel
+     */
+public AdminWorkAreaJPanel(Network network, Enterprise enterprise) {
+    initComponents();
+    this.network = network;
+    this.enterprise = enterprise;
+     jSplitPane1.setDividerLocation(200);
+    javax.swing.SwingUtilities.invokeLater(() -> {
+        java.awt.Window w = javax.swing.SwingUtilities.getWindowAncestor(this);
+        if (w != null) {
+            w.setSize(900, 700);
+            w.setLocationRelativeTo(null);
+        }
+    }); 
+     
+     
     }
 
     /**
@@ -42,6 +75,7 @@ public class AdminWorkAreaJPanel extends javax.swing.JPanel {
         btnManageUsers = new javax.swing.JButton();
         btnSystemOverview = new javax.swing.JButton();
         btnManageShipments = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         workArea = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
 
@@ -69,13 +103,30 @@ public class AdminWorkAreaJPanel extends javax.swing.JPanel {
         });
 
         btnManageUsers.setText("Manage Users");
+        btnManageUsers.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnManageUsersActionPerformed(evt);
+            }
+        });
 
         btnSystemOverview.setText("System Overview");
+        btnSystemOverview.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSystemOverviewActionPerformed(evt);
+            }
+        });
 
         btnManageShipments.setText("Manage Shipments");
         btnManageShipments.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnManageShipmentsActionPerformed(evt);
+            	btnManageShipmentsActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Logout");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -84,14 +135,19 @@ public class AdminWorkAreaJPanel extends javax.swing.JPanel {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnSystemOverview)
-                    .addComponent(btnManageShipments)
-                    .addComponent(btnManageUsers)
-                    .addComponent(btnManageProducts)
-                    .addComponent(btnViewOrders)
-                    .addComponent(btnViewReports))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnSystemOverview)
+                            .addComponent(btnManageShipments)
+                            .addComponent(btnManageUsers)
+                            .addComponent(btnManageProducts)
+                            .addComponent(btnViewOrders)
+                            .addComponent(btnViewReports)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addComponent(jButton1)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -109,7 +165,9 @@ public class AdminWorkAreaJPanel extends javax.swing.JPanel {
                 .addComponent(btnViewReports)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnSystemOverview)
-                .addContainerGap(189, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addContainerGap(148, Short.MAX_VALUE))
         );
 
         jSplitPane1.setLeftComponent(jPanel1);
@@ -127,28 +185,123 @@ public class AdminWorkAreaJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnManageProductsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageProductsActionPerformed
-        // TODO add your handling code here:
+   SupplierEnterprise supplierEnterprise = null;
+
+    for (Enterprise e : network.getEnterprises()) {
+        if (e instanceof SupplierEnterprise) {
+            supplierEnterprise = (SupplierEnterprise) e;
+            break;
+        }
+    }
+
+    if (supplierEnterprise == null) {
+        JOptionPane.showMessageDialog(this, "Supplier enterprise not found.");
+        return;
+    }
+
+    ManageProductJPanel panel = new ManageProductJPanel(workArea, supplierEnterprise);
+    workArea.add("ManageProductJPanel", panel);
+
+    CardLayout layout = (CardLayout) workArea.getLayout();
+    layout.show(workArea, "ManageProductJPanel");
     }//GEN-LAST:event_btnManageProductsActionPerformed
 
     private void btnViewOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewOrdersActionPerformed
-        OrderJPanel panel = new OrderJPanel(workArea, enterprise);
-        workArea.add("OrderJPanel", panel);
+     PlatformEnterprise platformEnterprise = null;
 
-        CardLayout layout = (CardLayout) workArea.getLayout();
-        layout.show(workArea, "OrderJPanel");
+    for (Enterprise e : network.getEnterprises()) {
+        if (e instanceof PlatformEnterprise) {
+            platformEnterprise = (PlatformEnterprise) e;
+            break;
+        }
+    }
+
+    if (platformEnterprise == null) {
+        JOptionPane.showMessageDialog(this, "Platform enterprise not found.");
+        return;
+    }
+
+    OrderJPanel panel = new OrderJPanel(workArea, platformEnterprise);
+    workArea.add("OrderJPanel", panel);
+
+    CardLayout layout = (CardLayout) workArea.getLayout();
+    layout.show(workArea, "OrderJPanel");
+        
+        
+        
+        
     }//GEN-LAST:event_btnViewOrdersActionPerformed
 
     private void btnViewReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewReportsActionPerformed
-        ReportViewerJPanel panel = new ReportViewerJPanel(workArea, enterprise);
-        workArea.add("ReportViewerJPanel", panel);
+   PlatformEnterprise platformEnterprise = null;
 
-        CardLayout layout = (CardLayout) workArea.getLayout();
-        layout.show(workArea, "ReportViewerJPanel");
+    for (Enterprise e : network.getEnterprises()) {
+        if (e instanceof PlatformEnterprise) {
+            platformEnterprise = (PlatformEnterprise) e;
+            break;
+        }
+    }
+
+    if (platformEnterprise == null) {
+        JOptionPane.showMessageDialog(this, "Platform enterprise not found.");
+        return;
+    }
+
+    ReportViewerJPanel panel = new ReportViewerJPanel(workArea, platformEnterprise);
+    workArea.add("ReportViewerJPanel", panel);
+
+    CardLayout layout = (CardLayout) workArea.getLayout();
+    layout.show(workArea, "ReportViewerJPanel");
+
+
     }//GEN-LAST:event_btnViewReportsActionPerformed
 
-    private void btnManageShipmentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageShipmentsActionPerformed
-        // TODO: logistics entry will be integrated after merge cleanup
-    }//GEN-LAST:event_btnManageShipmentsActionPerformed
+    private void btnManageUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageUsersActionPerformed
+ManageUsersJPanel panel = new ManageUsersJPanel(workArea, network);    workArea.add("ManageUsersJPanel", panel);
+
+    CardLayout layout = (CardLayout) workArea.getLayout();
+    layout.next(workArea);
+
+
+    }//GEN-LAST:event_btnManageUsersActionPerformed
+
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        Window window = SwingUtilities.getWindowAncestor(this);
+        if (window != null) {
+            window.dispose();
+        }
+        new LoginJFrame(network).setVisible(true);
+    }//GEN-LAST:event_btnLogoutActionPerformed
+
+    private void btnSystemOverviewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSystemOverviewActionPerformed
+PlatformEnterprise platformEnterprise = null;
+    for (Enterprise e : network.getEnterprises()) {
+        if (e instanceof PlatformEnterprise) {
+            platformEnterprise = (PlatformEnterprise) e;
+            break;
+        }
+    }
+    SystemOverviewJPanel panel = new SystemOverviewJPanel(workArea, network, platformEnterprise);
+    workArea.add("SystemOverviewJPanel", panel);
+    CardLayout layout = (CardLayout) workArea.getLayout();
+    layout.show(workArea, "SystemOverviewJPanel");    }//GEN-LAST:event_btnSystemOverviewActionPerformed
+    
+    private void btnManageShipmentsActionPerformed(java.awt.event.ActionEvent evt) {
+    	ManageShipmentsJPanel panel = new ManageShipmentsJPanel(workArea, network);  
+    	workArea.add("ManageShipmentsJPanel", panel);
+        CardLayout layout = (CardLayout) workArea.getLayout();
+        layout.next(workArea); 
+        }
+    
+    
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+ Window window = SwingUtilities.getWindowAncestor(this);
+    if (window != null) {
+        window.dispose();
+    }
+    new LoginJFrame(network).setVisible(true);    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnManageProducts;
@@ -157,6 +310,7 @@ public class AdminWorkAreaJPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnSystemOverview;
     private javax.swing.JButton btnViewOrders;
     private javax.swing.JButton btnViewReports;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSplitPane jSplitPane1;

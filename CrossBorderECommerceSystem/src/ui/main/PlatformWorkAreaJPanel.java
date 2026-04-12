@@ -5,8 +5,15 @@
 package ui.main;
 
 import business.enterprise.Enterprise;
+import business.enterprise.PlatformEnterprise;
+import business.network.Network;
 import java.awt.CardLayout;
+import java.awt.Window;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import ui.order.CustomerServiceJPanel;
 import ui.order.OrderJPanel;
+import ui.order.ReturnsJPanel;
 import ui.report.ReportViewerJPanel;
 /**
  *
@@ -15,9 +22,11 @@ import ui.report.ReportViewerJPanel;
 public class PlatformWorkAreaJPanel extends javax.swing.JPanel {
 
     private Enterprise enterprise;
+    private Network network;
 
-    public PlatformWorkAreaJPanel(Enterprise enterprise) {
+    public PlatformWorkAreaJPanel(Network network, Enterprise enterprise) {
         initComponents();
+        this.network = network;
         this.enterprise = enterprise;
         jSplitPane1.setDividerLocation(180);
     }
@@ -37,8 +46,8 @@ public class PlatformWorkAreaJPanel extends javax.swing.JPanel {
         btnViewOrders = new javax.swing.JButton();
         btnViewReports = new javax.swing.JButton();
         btnCustomerService = new javax.swing.JButton();
-        btnRiskAlerts = new javax.swing.JButton();
         btnReturns = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         workArea = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
 
@@ -70,28 +79,42 @@ public class PlatformWorkAreaJPanel extends javax.swing.JPanel {
         });
 
         btnCustomerService.setText("Customer Service");
-
-        btnRiskAlerts.setText("Risk Alerts");
-        btnRiskAlerts.addActionListener(new java.awt.event.ActionListener() {
+        btnCustomerService.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRiskAlertsActionPerformed(evt);
+                btnCustomerServiceActionPerformed(evt);
             }
         });
 
         btnReturns.setText("Returns ");
+        btnReturns.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReturnsActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Logout");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout menuPanelLayout = new javax.swing.GroupLayout(menuPanel);
         menuPanel.setLayout(menuPanelLayout);
         menuPanelLayout.setHorizontalGroup(
             menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menuPanelLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnViewReports)
-                    .addComponent(btnViewOrders)
-                    .addComponent(btnCustomerService)
-                    .addComponent(btnRiskAlerts)
-                    .addComponent(btnReturns))
+                    .addGroup(menuPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnViewOrders)
+                            .addComponent(btnCustomerService)
+                            .addComponent(btnViewReports)
+                            .addComponent(btnReturns, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(menuPanelLayout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addComponent(jButton1)))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         menuPanelLayout.setVerticalGroup(
@@ -104,10 +127,10 @@ public class PlatformWorkAreaJPanel extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(btnReturns)
                 .addGap(18, 18, 18)
-                .addComponent(btnRiskAlerts)
-                .addGap(18, 18, 18)
                 .addComponent(btnViewReports)
-                .addContainerGap(115, Short.MAX_VALUE))
+                .addGap(48, 48, 48)
+                .addComponent(jButton1)
+                .addContainerGap(85, Short.MAX_VALUE))
         );
 
         jSplitPane1.setLeftComponent(menuPanel);
@@ -125,20 +148,20 @@ public class PlatformWorkAreaJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnViewOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewOrdersActionPerformed
-        OrderJPanel panel = new OrderJPanel(workArea, enterprise);
-        workArea.add("OrderPanel", panel);
+       OrderJPanel panel = new OrderJPanel(workArea, (PlatformEnterprise) enterprise);
+    workArea.add("OrderJPanel", panel);
 
-        CardLayout layout = (CardLayout) workArea.getLayout();
-        layout.show(workArea, "OrderPanel");
+    CardLayout layout = (CardLayout) workArea.getLayout();
+    layout.show(workArea, "OrderJPanel");
 
     }//GEN-LAST:event_btnViewOrdersActionPerformed
 
     private void btnViewReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewReportsActionPerformed
-        ReportViewerJPanel panel = new ReportViewerJPanel(workArea, enterprise);
-        workArea.add("ReportViewerJPanel", panel);
+       ReportViewerJPanel panel = new ReportViewerJPanel(workArea, (PlatformEnterprise) enterprise);
+    workArea.add("ReportViewerJPanel", panel);
 
-        CardLayout layout = (CardLayout) workArea.getLayout();
-        layout.show(workArea, "ReportViewerJPanel");
+    CardLayout layout = (CardLayout) workArea.getLayout();
+    layout.show(workArea, "ReportViewerJPanel");
         
         
         
@@ -146,17 +169,44 @@ public class PlatformWorkAreaJPanel extends javax.swing.JPanel {
         
     }//GEN-LAST:event_btnViewReportsActionPerformed
 
-    private void btnRiskAlertsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRiskAlertsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnRiskAlertsActionPerformed
+    private void btnCustomerServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerServiceActionPerformed
+        CustomerServiceJPanel panel = new CustomerServiceJPanel(workArea, (PlatformEnterprise) enterprise);
+        workArea.add("CustomerServiceJPanel", panel);
+        CardLayout layout = (CardLayout) workArea.getLayout();
+        layout.show(workArea, "CustomerServiceJPanel");
+    }//GEN-LAST:event_btnCustomerServiceActionPerformed
+
+    private void btnReturnsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnsActionPerformed
+        ReturnsJPanel panel = new ReturnsJPanel(workArea, (PlatformEnterprise) enterprise);
+        workArea.add("ReturnsJPanel", panel);
+        CardLayout layout = (CardLayout) workArea.getLayout();
+        layout.show(workArea, "ReturnsJPanel");
+    }//GEN-LAST:event_btnReturnsActionPerformed
+
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        Window window = SwingUtilities.getWindowAncestor(this);
+        if (window != null) {
+            window.dispose();
+        }
+        new LoginJFrame(network).setVisible(true);
+    }//GEN-LAST:event_btnLogoutActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+Window window = SwingUtilities.getWindowAncestor(this);
+    if (window != null) {
+        window.dispose();
+    }
+    new LoginJFrame(network).setVisible(true);
+
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCustomerService;
     private javax.swing.JButton btnReturns;
-    private javax.swing.JButton btnRiskAlerts;
     private javax.swing.JButton btnViewOrders;
     private javax.swing.JButton btnViewReports;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSplitPane jSplitPane1;

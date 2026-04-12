@@ -8,12 +8,12 @@ package ui.logistics;
  *
  * @author a1
  */
-public class DeliveryJPanel extends javax.swing.JPanel {
+public class ShipmentTableJPanel extends javax.swing.JPanel {
 
     /**
-     * Creates new form DeliveryJPanel
+     * Creates new form ShipmentTableJPanel
      */
-    public DeliveryJPanel() {
+    public ShipmentTableJPanel() {
         initComponents();
     }
 

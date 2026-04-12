@@ -4,17 +4,37 @@
  */
 package ui.logistics;
 
+import java.awt.CardLayout;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+
+import javax.swing.SwingUtilities;
+
+import business.enterprise.LogisticsEnterprise;
+import business.network.Network;
+import ui.main.LoginJFrame;
+
 /**
  *
  * @author a1
  */
-public class DeliveryJPanel extends javax.swing.JPanel {
+public class LogisticsWorkAreaJPanel extends javax.swing.JPanel {
 
+	 private Network network;
+	 private LogisticsEnterprise enterprise;
+	    
     /**
-     * Creates new form DeliveryJPanel
+     * Creates new form LogisticsWorkAreaJPanel
      */
-    public DeliveryJPanel() {
+    public LogisticsWorkAreaJPanel() {
         initComponents();
+    }
+    
+    // 构造器改为：
+    public LogisticsWorkAreaJPanel(Network network, LogisticsEnterprise enterprise) {
+        initComponents();
+        this.network = network;
+        this.enterprise = enterprise;
     }
 
     /**
@@ -41,4 +61,6 @@ public class DeliveryJPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
+    
+ 
 }
