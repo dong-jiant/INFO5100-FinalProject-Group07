@@ -6,11 +6,15 @@ import business.enterprise.LogisticsEnterprise;
 import business.enterprise.PlatformEnterprise;
 import business.enterprise.SupplierEnterprise;
 import business.network.Network;
+import business.organization.Organization;
 import business.shipment.Shipment;
 import business.shipment.ShipmentDirectory;
 import business.user.Person;
 import business.workrequest.ProcurementRequest;
 import business.workrequest.RestockRequest;
+import business.workrequest.FulfillmentAssignment;
+import business.workrequest.DeliveryAssignment;
+import business.workrequest.ReturnRequest;
 
 public class ConfigureSystem {
 
@@ -33,6 +37,16 @@ public class ConfigureSystem {
         );
 
         Person p1 = new Person("Admin", "admin@test.com");
+
+        // ===== Organizations (6 total, 2 per enterprise) =====
+        supplier.addOrganization(new Organization("Product Management Org"));
+        supplier.addOrganization(new Organization("Order Processing Org"));
+
+        platform.addOrganization(new Organization("Order Management Org"));
+        platform.addOrganization(new Organization("Customer Service Org"));
+
+        // (Logistics orgs added after logistics enterprise is created below)
+
         Person p2 = new Person("Platform Manager", "platform@test.com");
         Person p3 = new Person("Customer Service", "service@test.com");
         Person p4 = new Person("Supplier Manager", "supplier@test.com");
@@ -69,6 +83,33 @@ public class ConfigureSystem {
                 "Supplier@123",
                 "SUPPLIER_MANAGER",
                 p4
+        );
+
+        // Supplier Staff -> supplier
+        Person p5 = new Person("Supplier Staff", "staff@test.com");
+        supplier.getUserAccountDirectory().addUserAccount(
+                "supplier_staff",
+                "123",
+                "SUPPLIER_STAFF",
+                p5
+        );
+
+        // Data Analyst -> platform
+        Person p6 = new Person("Data Analyst", "analyst@test.com");
+        platform.getUserAccountDirectory().addUserAccount(
+                "analyst",
+                "123",
+                "DATA_ANALYST",
+                p6
+        );
+
+        // Customer -> platform
+        Person p7 = new Person("Customer User", "customer@test.com");
+        platform.getUserAccountDirectory().addUserAccount(
+                "customer",
+                "123",
+                "CUSTOMER",
+                p7
         );
 
         // ===== Supplier Products =====
@@ -129,12 +170,37 @@ public class ConfigureSystem {
                         "Low stock risk"
                 )
         );
-        
-        
-        
+
+        // ===== Cross-organization Work Request: Fulfillment Assignment (within Supplier) =====
+        supplier.getWorkRequestDirectory().addRequest(
+                new FulfillmentAssignment(
+                        supplier.getName(),
+                        supplier.getName(),
+                        "Product Management Org",
+                        "Order Processing Org",
+                        "Assign fulfillment of order ORD-1001 to warehouse staff",
+                        "ORD-1001",
+                        "supplier_staff"
+                )
+        );
+
+        // ===== Cross-enterprise Work Request: Return Request (Platform -> Supplier) =====
+        supplier.getWorkRequestDirectory().addRequest(
+                new ReturnRequest(
+                        platform.getName(),
+                        supplier.getName(),
+                        "Customer Service Org",
+                        "Order Processing Org",
+                        "Customer requested return for defective product",
+                        "ORD-1003",
+                        "Product arrived damaged"
+                )
+        );
+
      // ===== Logistics Enterprise =====
         LogisticsEnterprise logisticsEnt = new LogisticsEnterprise("SwiftShip Logistics", "LOG-001", "USA");
-        //network.getEnterpriseDirectory().addEnterprise(logisticsEnt);
+        logisticsEnt.addOrganization(new Organization("Shipment Org"));
+        logisticsEnt.addOrganization(new Organization("Delivery Org"));
         network.addEnterprise(logisticsEnt);
 
         // Logistics users
@@ -144,6 +210,19 @@ public class ConfigureSystem {
         logisticsEnt.getUserAccountDirectory().addUserAccount("logistics1", "123", "LOGISTICS_COORDINATOR", pLogCoord);
         logisticsEnt.getUserAccountDirectory().addUserAccount("delivery1", "123", "DELIVERY_STAFF", pDeliver1);
         logisticsEnt.getUserAccountDirectory().addUserAccount("delivery2", "123", "DELIVERY_STAFF", pDeliver2);
+
+        // ===== Cross-organization Work Request: Delivery Assignment (within Logistics) =====
+        logisticsEnt.getWorkRequestDirectory().addRequest(
+                new DeliveryAssignment(
+                        logisticsEnt.getName(),
+                        logisticsEnt.getName(),
+                        "Shipment Org",
+                        "Delivery Org",
+                        "Assign delivery of SHP-1005 to delivery staff",
+                        "SHP-1005",
+                        "delivery1"
+                )
+        );
 
         // Pre-populate shipment test data (10 records, evenly distributed statuses)
         ShipmentDirectory shipDir = logisticsEnt.getShipmentDirectory();
