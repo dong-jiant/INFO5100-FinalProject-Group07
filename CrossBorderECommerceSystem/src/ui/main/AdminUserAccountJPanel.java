@@ -186,15 +186,24 @@ public class AdminUserAccountJPanel extends javax.swing.JPanel {
 String newUsername = txtUsername.getText().trim();
         String newRole = txtRole.getText().trim();
         String newPassword = txtNewPassword.getText().trim();
+        String newEmail = txtEmail.getText().trim();
 
-        if (newUsername.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Username cannot be empty.", "Warning", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+        String err = business.ValidationHelper.validateUsername(newUsername);
+        if (err != null) { JOptionPane.showMessageDialog(this, err, "Warning", JOptionPane.WARNING_MESSAGE); return; }
 
         if (newRole.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Role cannot be empty.", "Warning", JOptionPane.WARNING_MESSAGE);
             return;
+        }
+
+        if (!newEmail.isEmpty()) {
+            err = business.ValidationHelper.validateEmail(newEmail);
+            if (err != null) { JOptionPane.showMessageDialog(this, err, "Warning", JOptionPane.WARNING_MESSAGE); return; }
+        }
+
+        if (!newPassword.isEmpty()) {
+            err = business.ValidationHelper.validatePassword(newPassword);
+            if (err != null) { JOptionPane.showMessageDialog(this, err, "Warning", JOptionPane.WARNING_MESSAGE); return; }
         }
 
         userAccount.setUsername(newUsername);

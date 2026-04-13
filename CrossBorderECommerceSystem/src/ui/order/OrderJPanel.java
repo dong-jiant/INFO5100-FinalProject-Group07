@@ -191,16 +191,12 @@ public class OrderJPanel extends javax.swing.JPanel {
 
     private void btnCreateOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateOrderActionPerformed
         String customerName = JOptionPane.showInputDialog(this, "Customer name:");
-        if (customerName == null || customerName.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Customer name is required.");
-            return;
-        }
+        String err = business.ValidationHelper.validateName(customerName);
+        if (err != null) { JOptionPane.showMessageDialog(this, err); return; }
 
         String email = JOptionPane.showInputDialog(this, "Customer email:");
-        if (email == null || email.trim().isEmpty() || !email.contains("@")) {
-            JOptionPane.showMessageDialog(this, "Please input a valid email.");
-            return;
-        }
+        err = business.ValidationHelper.validateEmail(email);
+        if (err != null) { JOptionPane.showMessageDialog(this, err); return; }
 
         String country = JOptionPane.showInputDialog(this, "Destination country:");
         if (country == null || country.trim().isEmpty()) {

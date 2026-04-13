@@ -7,6 +7,7 @@ package ui.main;
 import business.ConfigureSystem;
 import business.enterprise.Enterprise;
 import business.enterprise.LogisticsEnterprise;
+import business.enterprise.PlatformEnterprise;
 import business.enterprise.SupplierEnterprise;
 import business.network.Network;
 import business.user.UserAccount;
@@ -188,8 +189,29 @@ if (network == null) {
         } else if (foundUser.getRole().equals("CUSTOMER_SERVICE")) {
             this.setContentPane(new PlatformWorkAreaJPanel(network, matchedEnterprise));
             this.revalidate();
-                           
-            
+        } else if (foundUser.getRole().equals("DATA_ANALYST")) {
+            PlatformEnterprise pe = null;
+            for (Enterprise e : network.getEnterprises()) {
+                if (e instanceof PlatformEnterprise) { pe = (PlatformEnterprise) e; break; }
+            }
+            if (pe != null) {
+                this.setContentPane(new DataAnalystJPanel(network, pe));
+                this.revalidate();
+            }
+        } else if (foundUser.getRole().equals("CUSTOMER")) {
+            PlatformEnterprise pe = null;
+            for (Enterprise e : network.getEnterprises()) {
+                if (e instanceof PlatformEnterprise) { pe = (PlatformEnterprise) e; break; }
+            }
+            if (pe != null) {
+                this.setContentPane(new CustomerJPanel(network, pe));
+                this.revalidate();
+            }
+        } else if (foundUser.getRole().equals("SUPPLIER_STAFF")) {
+            if (matchedEnterprise instanceof SupplierEnterprise) {
+                this.setContentPane(new SupplierWorkAreaJPanel(network, (SupplierEnterprise) matchedEnterprise));
+                this.revalidate();
+            }
         } else {
             JOptionPane.showMessageDialog(this, "Role not supported yet");
         }

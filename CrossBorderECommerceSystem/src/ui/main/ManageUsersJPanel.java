@@ -138,22 +138,22 @@ public ManageUsersJPanel(JPanel workArea, Network network) {
 
     private void btnAddUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddUserActionPerformed
 String username = JOptionPane.showInputDialog(this, "Enter Username:");
-if (username == null || username.trim().isEmpty()) {
-    JOptionPane.showMessageDialog(this, "Username cannot be empty.");
-    return;
-}
+String err = business.ValidationHelper.validateUsername(username);
+if (err != null) { JOptionPane.showMessageDialog(this, err); return; }
 
-String password = JOptionPane.showInputDialog(this, "Enter Password:");
-if (password == null || password.trim().isEmpty()) {
-    JOptionPane.showMessageDialog(this, "Password cannot be empty.");
-    return;
-}
+String password = JOptionPane.showInputDialog(this, "Enter Password (min 6 chars, letter + digit):");
+err = business.ValidationHelper.validatePassword(password);
+if (err != null) { JOptionPane.showMessageDialog(this, err); return; }
 
 String role = JOptionPane.showInputDialog(this, "Enter Role:");
 if (role == null || role.trim().isEmpty()) {
     JOptionPane.showMessageDialog(this, "Role cannot be empty.");
     return;
 }
+
+String email = JOptionPane.showInputDialog(this, "Enter Email:");
+err = business.ValidationHelper.validateEmail(email);
+if (err != null) { JOptionPane.showMessageDialog(this, err); return; }
 
 String[] enterpriseNames = new String[network.getEnterprises().size()];
 for (int i = 0; i < network.getEnterprises().size(); i++) {
@@ -178,7 +178,7 @@ for (Enterprise e : network.getEnterprises()) {
     }
 }
 
-Person person = new Person(username.trim(), "N/A");
+Person person = new Person(username.trim(), email.trim());
 target.getUserAccountDirectory().addUserAccount(
         username.trim(),
         password.trim(),
