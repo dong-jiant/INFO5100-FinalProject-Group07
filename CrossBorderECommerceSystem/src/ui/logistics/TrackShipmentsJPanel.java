@@ -36,7 +36,7 @@ public class TrackShipmentsJPanel extends javax.swing.JPanel {
         btnBack = new javax.swing.JButton("Back to Manage Shipments");
         btnBack.addActionListener(e -> goBack());
 
-        // 布局
+        // Layout
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -61,7 +61,7 @@ public class TrackShipmentsJPanel extends javax.swing.JPanel {
         );
     }
 
-    // 填充追踪表格
+    // Populate tracking table
     private void populateTrackTable() {
         DefaultTableModel model = (DefaultTableModel) tblTrack.getModel();
         model.setRowCount(0);
@@ -78,7 +78,7 @@ public class TrackShipmentsJPanel extends javax.swing.JPanel {
         }
     }
 
-    // 返回上一页
+    // Go back to previous page
     private void goBack() {
         workArea.remove(this);
         CardLayout layout = (CardLayout) workArea.getLayout();

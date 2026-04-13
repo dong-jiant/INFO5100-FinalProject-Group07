@@ -26,7 +26,6 @@ public class DelayAlertsJPanel extends javax.swing.JPanel {
         javax.swing.JLabel titleLabel = new javax.swing.JLabel("Delay Alerts");
         titleLabel.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 18));
 
-        // 表格：ShipmentID | OrderID | CurrentStatus | RiskType
         tblAlert = new JTable();
         tblAlert.setModel(new DefaultTableModel(
             new Object[][] {},
@@ -66,24 +65,32 @@ public class DelayAlertsJPanel extends javax.swing.JPanel {
         model.setRowCount(0);
 
         for (Shipment s : logisticsEnterprise.getShipmentDirectory().getAllShipments()) {
-            String risk;
             String status = s.getStatus();
-            
-            // 自动判断风险类型
-            if (status.equalsIgnoreCase("Delivered")) {
+            String risk;
+
+            if ("Delivered".equalsIgnoreCase(status)) {
                 risk = "Normal";
-            } else if (status.equalsIgnoreCase("In Transit")) {
+            } else if ("Shipped".equalsIgnoreCase(status) || "Out for Delivery".equalsIgnoreCase(status)) {
+                risk = "Normal";
+            } else if ("Processing".equalsIgnoreCase(status)) {
                 risk = "Medium Risk";
-            } else {
+            } else if ("Created".equalsIgnoreCase(status)) {
                 risk = "High Risk";
+            } else if ("Returned".equalsIgnoreCase(status)) {
+                risk = "High Risk";
+            } else {
+                risk = "Unknown";
             }
 
-            model.addRow(new Object[] {
-                s.getTrackingNumber(),
-                s.getOrderId(),
-                status,
-                risk
-            });
+            // Only show non-normal entries as alerts
+            if (!"Normal".equals(risk)) {
+                model.addRow(new Object[] {
+                    s.getShipmentId(),
+                    s.getOrderId(),
+                    status,
+                    risk
+                });
+            }
         }
     }
 

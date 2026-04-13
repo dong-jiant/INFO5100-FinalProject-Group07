@@ -132,17 +132,20 @@ public class ConfigureSystem {
         
         
         
-     // ===== 新增：物流企业 =====
+     // ===== Logistics Enterprise =====
         LogisticsEnterprise logisticsEnt = new LogisticsEnterprise("SwiftShip Logistics", "LOG-001", "USA");
         //network.getEnterpriseDirectory().addEnterprise(logisticsEnt);
         network.addEnterprise(logisticsEnt);
 
-        // 物流用户
-        logisticsEnt.getUserAccountDirectory().addUserAccount("logistics1", "123", "LOGISTICS_COORDINATOR",p1);
-        logisticsEnt.getUserAccountDirectory().addUserAccount("delivery1", "123", "DELIVERY_STAFF",p1);
-        logisticsEnt.getUserAccountDirectory().addUserAccount("delivery2", "123", "DELIVERY_STAFF",p1);
+        // Logistics users
+        Person pLogCoord = new Person("Logistics Coordinator", "logistics1@test.com");
+        Person pDeliver1 = new Person("Delivery Staff 1", "delivery1@test.com");
+        Person pDeliver2 = new Person("Delivery Staff 2", "delivery2@test.com");
+        logisticsEnt.getUserAccountDirectory().addUserAccount("logistics1", "123", "LOGISTICS_COORDINATOR", pLogCoord);
+        logisticsEnt.getUserAccountDirectory().addUserAccount("delivery1", "123", "DELIVERY_STAFF", pDeliver1);
+        logisticsEnt.getUserAccountDirectory().addUserAccount("delivery2", "123", "DELIVERY_STAFF", pDeliver2);
 
-        // 预置 Shipment 测试数据（10条，状态分布均匀）
+        // Pre-populate shipment test data (10 records, evenly distributed statuses)
         ShipmentDirectory shipDir = logisticsEnt.getShipmentDirectory();
 
         // 2 Created

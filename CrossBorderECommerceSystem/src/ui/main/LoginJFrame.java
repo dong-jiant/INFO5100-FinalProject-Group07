@@ -173,7 +173,14 @@ if (network == null) {
             }
         } else if (foundUser.getRole().equals("DELIVERY_STAFF")) {
             if (matchedEnterprise instanceof LogisticsEnterprise) {
-                this.setContentPane(new DeliveryJPanel((LogisticsEnterprise) matchedEnterprise, foundUser.getUsername()));
+                this.setContentPane(new DeliveryJPanel(network, (LogisticsEnterprise) matchedEnterprise, foundUser.getUsername()));
+                this.revalidate();
+            } else {
+                JOptionPane.showMessageDialog(this, "Current enterprise is not a logistics enterprise.");
+            }
+        } else if (foundUser.getRole().equals("LOGISTICS_COORDINATOR")) {
+            if (matchedEnterprise instanceof LogisticsEnterprise) {
+                this.setContentPane(new ui.logistics.LogisticsWorkAreaJPanel(network, (LogisticsEnterprise) matchedEnterprise));
                 this.revalidate();
             } else {
                 JOptionPane.showMessageDialog(this, "Current enterprise is not a logistics enterprise.");

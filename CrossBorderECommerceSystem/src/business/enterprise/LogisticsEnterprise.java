@@ -18,7 +18,7 @@ public class LogisticsEnterprise extends Enterprise {
         this.workRequestDirectory = new WorkRequestDirectory();
     }
 
-    // getter 方法
+    // Getter methods
     public String getLogisticsId() { return logisticsId; }
     public String getCountry() { return country; }
     public ShipmentDirectory getShipmentDirectory() { return shipmentDirectory; }

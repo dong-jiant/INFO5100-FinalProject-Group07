@@ -260,7 +260,7 @@ public AdminWorkAreaJPanel(Network network, Enterprise enterprise) {
 ManageUsersJPanel panel = new ManageUsersJPanel(workArea, network);    workArea.add("ManageUsersJPanel", panel);
 
     CardLayout layout = (CardLayout) workArea.getLayout();
-    layout.next(workArea);
+    layout.show(workArea, "ManageUsersJPanel");
 
 
     }//GEN-LAST:event_btnManageUsersActionPerformed
@@ -290,7 +290,7 @@ PlatformEnterprise platformEnterprise = null;
     	ManageShipmentsJPanel panel = new ManageShipmentsJPanel(workArea, network);  
     	workArea.add("ManageShipmentsJPanel", panel);
         CardLayout layout = (CardLayout) workArea.getLayout();
-        layout.next(workArea); 
+        layout.show(workArea, "ManageShipmentsJPanel"); 
         }
     
     
