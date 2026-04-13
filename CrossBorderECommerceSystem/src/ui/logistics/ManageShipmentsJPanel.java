@@ -33,7 +33,7 @@ public class ManageShipmentsJPanel extends javax.swing.JPanel {
         this.workArea = workArea;
         this.network = network;
         
-        // 初始化物流企业
+        // Initialize logistics enterprise
         for (Enterprise e : network.getEnterprises()) {
             if (e instanceof LogisticsEnterprise) {
                 this.logisticsEnterprise = (LogisticsEnterprise) e;
@@ -43,13 +43,13 @@ public class ManageShipmentsJPanel extends javax.swing.JPanel {
         
         populateTable();
         
-        // 绑定所有按钮事件
+        // Bind all button events
         buttonA.addActionListener(e -> openTrackShipmentsPanel());
         buttonB.addActionListener(e -> openAssignDeliveryPanel());
         buttonC.addActionListener(e -> openDelayAlertsPanel());
     }
 
-    // 打开追踪界面
+    // Open tracking panel
     private void openTrackShipmentsPanel() {
         if (logisticsEnterprise == null) {
             JOptionPane.showMessageDialog(this, "Logistics Enterprise not found!");
@@ -58,10 +58,10 @@ public class ManageShipmentsJPanel extends javax.swing.JPanel {
         TrackShipmentsJPanel panel = new TrackShipmentsJPanel(workArea, logisticsEnterprise);
         workArea.add(panel, "TrackShipmentsJPanel");
         CardLayout layout = (CardLayout) workArea.getLayout();
-        layout.next(workArea);
+        layout.show(workArea, "TrackShipmentsJPanel");
     }
     
-    // 打开分配配送界面
+    // Open assign delivery panel
     private void openAssignDeliveryPanel() {
         if (logisticsEnterprise == null) {
             JOptionPane.showMessageDialog(this, "Logistics Enterprise not found!");
@@ -70,10 +70,10 @@ public class ManageShipmentsJPanel extends javax.swing.JPanel {
         AssignDeliveryJPanel panel = new AssignDeliveryJPanel(workArea, logisticsEnterprise);
         workArea.add(panel, "AssignDeliveryJPanel");
         CardLayout layout = (CardLayout) workArea.getLayout();
-        layout.next(workArea);
+        layout.show(workArea, "AssignDeliveryJPanel");
     }
     
-    // 打开延迟预警界面
+    // Open delay alerts panel
     private void openDelayAlertsPanel() {
         if (logisticsEnterprise == null) {
             JOptionPane.showMessageDialog(this, "Logistics Enterprise not found!");
@@ -82,7 +82,7 @@ public class ManageShipmentsJPanel extends javax.swing.JPanel {
         DelayAlertsJPanel panel = new DelayAlertsJPanel(workArea, logisticsEnterprise);
         workArea.add(panel, "DelayAlertsJPanel");
         CardLayout layout = (CardLayout) workArea.getLayout();
-        layout.next(workArea);
+        layout.show(workArea, "DelayAlertsJPanel");
     }
 
     @SuppressWarnings("unchecked")
@@ -109,7 +109,7 @@ public class ManageShipmentsJPanel extends javax.swing.JPanel {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Request ID", "Order ID", "Supplier", "Status", "Date"
+                "Shipment ID", "Order ID", "Origin", "Status", "Date"
             }
         ));
         jScrollPane1.setViewportView(tblShipmentss);
@@ -193,7 +193,7 @@ public class ManageShipmentsJPanel extends javax.swing.JPanel {
     }
 
     private void btnAddShipmentsActionPerformed(java.awt.event.ActionEvent evt) {
-        // 创建弹窗输入组件 —— 全部你要的字段
+        // Create dialog input fields
         javax.swing.JTextField trackingField = new javax.swing.JTextField();
         javax.swing.JTextField orderIdField = new javax.swing.JTextField();
         javax.swing.JTextField supplierField = new javax.swing.JTextField();
@@ -201,7 +201,7 @@ public class ManageShipmentsJPanel extends javax.swing.JPanel {
             new String[]{"Pending", "In Transit", "Delivered", "Failed"}
         );
 
-        // 新增你要的字段
+        // Additional fields
         javax.swing.JTextField etaField = new javax.swing.JTextField();
         javax.swing.JTextField carrierField = new javax.swing.JTextField();
         javax.swing.JTextField originField = new javax.swing.JTextField();
@@ -209,7 +209,7 @@ public class ManageShipmentsJPanel extends javax.swing.JPanel {
         javax.swing.JTextField notesField = new javax.swing.JTextField();
         javax.swing.JTextField deliveryStaffField = new javax.swing.JTextField();
 
-        // 组装弹窗内容
+        // Assemble dialog content
         Object[] fields = {
         	"Order ID:", orderIdField,
             "Tracking Number:", trackingField,
@@ -228,13 +228,13 @@ public class ManageShipmentsJPanel extends javax.swing.JPanel {
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
         if (result == JOptionPane.OK_OPTION) {
-            // 获取输入值
+            // Get input values
             String trackingNumber = trackingField.getText().trim();
             String orderId = orderIdField.getText().trim();
             String supplier = supplierField.getText().trim();
             String status = (String) statusBox.getSelectedItem();
 
-            // 获取新增字段
+            // Get additional field values
             String etaStr = etaField.getText().trim();
             String carrier = carrierField.getText().trim();
             String origin = originField.getText().trim();
@@ -242,7 +242,7 @@ public class ManageShipmentsJPanel extends javax.swing.JPanel {
             String notes = notesField.getText().trim();
             String deliveryStaff = deliveryStaffField.getText().trim();
 
-            // 非空校验
+            // Required field validation
             if (trackingNumber.isEmpty() || orderId.isEmpty() || supplier.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Tracking Number, Order ID, Supplier are required!", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -257,13 +257,12 @@ public class ManageShipmentsJPanel extends javax.swing.JPanel {
                 Shipment newShipment = logisticsEnterprise.getShipmentDirectory().addShipment();
                 newShipment.setTrackingNumber(trackingNumber);
                 newShipment.setOrderId(orderId);
-                newShipment.setNotes(supplier);
                 newShipment.setStatus(status);
                 newShipment.setCreatedDate(new Date());
 
-                // ============== 赋值新增字段 ==============
+                // Set additional fields
                 if (etaStr != null && !etaStr.isEmpty()) {
-                    newShipment.setEta(etaStr); // 支持简单日期输入
+                    newShipment.setEta(etaStr); // Supports simple date input
                 }
                 newShipment.setCarrier(carrier);
                 newShipment.setOrigin(origin);
@@ -296,10 +295,10 @@ public class ManageShipmentsJPanel extends javax.swing.JPanel {
 
         try {
             DefaultTableModel model = (DefaultTableModel) tblShipmentss.getModel();
-            String trackingNumber = model.getValueAt(selectedRow, 0).toString();
+            String shipmentId = model.getValueAt(selectedRow, 0).toString();
 
             for (Shipment ship : logisticsEnterprise.getShipmentDirectory().getAllShipments()) {
-                if (ship.getTrackingNumber().equals(trackingNumber)) {
+                if (ship.getShipmentId().equals(shipmentId)) {
                     logisticsEnterprise.getShipmentDirectory().removeShipment(ship);
                     break;
                 }
@@ -325,9 +324,9 @@ public class ManageShipmentsJPanel extends javax.swing.JPanel {
         ArrayList<Shipment> shipmentList = logisticsEnterprise.getShipmentDirectory().getAllShipments();
         for (Shipment ship : shipmentList) {
             Object[] row = new Object[5];
-            row[0] = ship.getTrackingNumber();
+            row[0] = ship.getShipmentId();
             row[1] = ship.getOrderId();
-            row[2] = ship.getNotes();
+            row[2] = ship.getOrigin();
             row[3] = ship.getStatus();
             row[4] = ship.getCreatedDate().toGMTString();
             model.addRow(row);

@@ -15,17 +15,17 @@ public class Shipment {
 	    private String shipmentId;
 	    private String orderId;
 	    private String status;          // Created / Processing / Shipped / Out for Delivery / Delivered / Returned
-	    private String eta;             // 格式 yyyy-MM-dd
+	    private String eta;             // format: yyyy-MM-dd
 	    private String origin;
 	    private String destination;
 	    private String carrier;         // FedEx / UPS / DHL 等
 	    private String trackingNumber;
-	    private String assignedDeliveryStaff;  // 配送员 username
+	    private String assignedDeliveryStaff;  // delivery staff username
 	    private Date createdDate;
 	    private Date deliveredDate;
 	    private String notes;
 
-	    // 状态常量
+	    // Status constants
 	    public static final String STATUS_CREATED = "Created";
 	    public static final String STATUS_PROCESSING = "Processing";
 	    public static final String STATUS_SHIPPED = "Shipped";

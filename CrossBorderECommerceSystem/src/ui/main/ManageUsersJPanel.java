@@ -19,7 +19,6 @@ import business.user.UserAccount;
  */
 public class ManageUsersJPanel extends javax.swing.JPanel {
     private JPanel workArea;
-    private Enterprise enterprise;
     private Network network;
 
     /**
@@ -205,17 +204,22 @@ JOptionPane.showMessageDialog(this, "User added successfully.");
     DefaultTableModel model = (DefaultTableModel) tblUsers.getModel();
     UserAccount userAccount = (UserAccount) model.getValueAt(selectedRow, 0);
 
+    Enterprise selectedEnterprise = findEnterpriseForRow(selectedRow);
+    if (selectedEnterprise == null) {
+        JOptionPane.showMessageDialog(this, "Enterprise not found for this user.");
+        return;
+    }
+
     AdminUserAccountJPanel panel = new AdminUserAccountJPanel(
         workArea,
-        enterprise,
+        selectedEnterprise,
         userAccount,
         this
-
     );
 
     workArea.add("AdminUserAccountJPanel", panel);
     CardLayout layout = (CardLayout) workArea.getLayout();
-    layout.next(workArea);
+    layout.show(workArea, "AdminUserAccountJPanel");
     }//GEN-LAST:event_btnNextActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -240,7 +244,13 @@ JOptionPane.showMessageDialog(this, "User added successfully.");
     DefaultTableModel model = (DefaultTableModel) tblUsers.getModel();
     UserAccount userAccount = (UserAccount) model.getValueAt(selectedRow, 0);
 
-    enterprise.getUserAccountDirectory().deleteUserAccount(userAccount);
+    Enterprise ownerEnterprise = findEnterpriseForRow(selectedRow);
+    if (ownerEnterprise == null) {
+        JOptionPane.showMessageDialog(this, "Enterprise not found for this user.");
+        return;
+    }
+
+    ownerEnterprise.getUserAccountDirectory().deleteUserAccount(userAccount);
 
     populateTable();
 
@@ -272,6 +282,17 @@ JOptionPane.showMessageDialog(this, "User added successfully.");
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblUsers;
     // End of variables declaration//GEN-END:variables
+
+    private Enterprise findEnterpriseForRow(int row) {
+        DefaultTableModel model = (DefaultTableModel) tblUsers.getModel();
+        String enterpriseName = (String) model.getValueAt(row, 3);
+        for (Enterprise e : network.getEnterprises()) {
+            if (e.getName().equals(enterpriseName)) {
+                return e;
+            }
+        }
+        return null;
+    }
 
     void populateTable() {
    DefaultTableModel model = (DefaultTableModel) tblUsers.getModel();

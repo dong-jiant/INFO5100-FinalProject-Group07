@@ -28,7 +28,7 @@ public class ShipmentRequest extends WorkRequest {
         return "Order: " + orderId + ", " + origin + " → " + destination;
     }
 
-    // getter 方法
+    // Getter methods
     public String getOrderId() { return orderId; }
     public String getOrigin() { return origin; }
     public String getDestination() { return destination; }
